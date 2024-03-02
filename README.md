@@ -26,3 +26,9 @@ TODO:
     - coatings
     - potions
     - elixirs
+
+useful commands:
+
+```bash
+docker run --name postgres -e POSTGRES_PASSWORD=password -e POSTGRES_DB=bg3builds -d postgres:16
+```
