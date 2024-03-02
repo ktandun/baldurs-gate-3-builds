@@ -1,6 +1,7 @@
 using System.Web;
 using BG3Builds.Database;
 using BG3Builds.Database.Entities;
+using BG3Builds.Scraper.Utilities;
 using BG3Builds.Shared.Enums;
 using HtmlAgilityPack;
 
@@ -50,14 +51,14 @@ public static class HandwearScraper
             var columnNumber = 1;
             var handwearName = string.Empty;
             var handwearWikiUrl = string.Empty;
+            var handwearIconUrl = string.Empty;
 
             foreach (var column in handwearRow.QuerySelectorAll("td"))
             {
                 switch (columnNumber)
                 {
                     case (int)Columns.HandwearName:
-                        handwearName = column.QuerySelector("p a span").InnerText.Trim();
-                        handwearWikiUrl = column.QuerySelector("p a").GetAttributeValue("href", string.Empty);
+                        (handwearName, handwearWikiUrl, handwearIconUrl) = ScraperUtility.ScrapeObjectNameFromTablesorter(column);
                         break;
                 }
 
@@ -69,7 +70,8 @@ public static class HandwearScraper
                 HandwearId = Guid.NewGuid(),
                 Name = HttpUtility.HtmlDecode(handwearName),
                 ArmourProficiency = armourProficiency,
-                WikiUrl = handwearWikiUrl
+                WikiUrl = handwearWikiUrl,
+                IconUrl = handwearIconUrl
             };
         }
     }

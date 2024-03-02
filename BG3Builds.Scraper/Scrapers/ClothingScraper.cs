@@ -1,6 +1,7 @@
 using System.Web;
 using BG3Builds.Database;
 using BG3Builds.Database.Entities;
+using BG3Builds.Scraper.Utilities;
 using BG3Builds.Shared.Enums;
 using HtmlAgilityPack;
 
@@ -46,6 +47,7 @@ public static class ClothingScraper
             var columnNumber = 1;
             var clothingName = string.Empty;
             var clothingWikiUrl = string.Empty;
+            var clothingIconUrl = string.Empty;
             var clothingClass = 0;
 
             foreach (var column in clothingRow.QuerySelectorAll("td"))
@@ -53,8 +55,7 @@ public static class ClothingScraper
                 switch (columnNumber)
                 {
                     case (int)Columns.ClothingName:
-                        clothingName = column.QuerySelector("p a span").InnerText.Trim();
-                        clothingWikiUrl = column.QuerySelector("p a").GetAttributeValue("href", string.Empty);
+                        (clothingName, clothingWikiUrl, clothingIconUrl) = ScraperUtility.ScrapeObjectNameFromTablesorter(column);
                         break;
                 }
 
@@ -68,7 +69,8 @@ public static class ClothingScraper
                 ArmourClass = 10,
                 StealthDisadvantage = false,
                 ArmourProficiency = armourProficiency,
-                WikiUrl = clothingWikiUrl
+                WikiUrl = clothingWikiUrl,
+                IconUrl = clothingIconUrl
             };
         }
     }

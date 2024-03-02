@@ -1,6 +1,7 @@
 using System.Web;
 using BG3Builds.Database;
 using BG3Builds.Database.Entities;
+using BG3Builds.Scraper.Utilities;
 using BG3Builds.Shared.Enums;
 using BG3Builds.Shared.Extensions;
 using HtmlAgilityPack;
@@ -57,6 +58,7 @@ public static class ArmourScraper
             var columnNumber = 1;
             var armourName = string.Empty;
             var armourWikiUrl = string.Empty;
+            var armourIconUrl = string.Empty;
             var armourClass = 0;
             var armourStealthDisadvantage = true;
 
@@ -65,8 +67,8 @@ public static class ArmourScraper
                 switch (columnNumber)
                 {
                     case (int)Columns.ArmourName:
-                        armourName = column.QuerySelector("p a span").InnerText.Trim();
-                        armourWikiUrl = column.QuerySelector("p a").GetAttributeValue("href", string.Empty);
+                        (armourName, armourWikiUrl, armourIconUrl) =
+                            ScraperUtility.ScrapeObjectNameFromTablesorter(column);
                         break;
 
                     case (int)Columns.ArmourClass:
@@ -88,7 +90,8 @@ public static class ArmourScraper
                 ArmourClass = armourClass,
                 StealthDisadvantage = armourStealthDisadvantage,
                 ArmourProficiency = armourProficiency,
-                WikiUrl = armourWikiUrl
+                WikiUrl = armourWikiUrl,
+                IconUrl = armourIconUrl,
             };
         }
     }

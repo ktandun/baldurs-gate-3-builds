@@ -1,6 +1,7 @@
 using System.Web;
 using BG3Builds.Database;
 using BG3Builds.Database.Entities;
+using BG3Builds.Scraper.Utilities;
 using BG3Builds.Shared.Enums;
 using BG3Builds.Shared.Extensions;
 using HtmlAgilityPack;
@@ -59,14 +60,14 @@ public static class HeadwearScraper
             var columnNumber = 1;
             var headwearName = string.Empty;
             var headwearWikiUrl = string.Empty;
+            var headwearIconUrl = string.Empty;
 
             foreach (var column in headwearRow.QuerySelectorAll("td"))
             {
                 switch (columnNumber)
                 {
                     case (int)Columns.HeadwearName:
-                        headwearName = column.QuerySelector("p a span").InnerText.Trim();
-                        headwearWikiUrl = column.QuerySelector("p a").GetAttributeValue("href", string.Empty);
+                        (headwearName, headwearWikiUrl, headwearIconUrl) = ScraperUtility.ScrapeObjectNameFromTablesorter(column);
                         break;
                 }
 
@@ -78,7 +79,8 @@ public static class HeadwearScraper
                 HeadwearId = Guid.NewGuid(),
                 Name = HttpUtility.HtmlDecode(headwearName),
                 HeadwearProficiency = armourProficiency,
-                WikiUrl = headwearWikiUrl
+                WikiUrl = headwearWikiUrl,
+                IconUrl = headwearIconUrl
             };
         }
     }

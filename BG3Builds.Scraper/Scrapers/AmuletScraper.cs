@@ -1,6 +1,7 @@
 using System.Web;
 using BG3Builds.Database;
 using BG3Builds.Database.Entities;
+using BG3Builds.Scraper.Utilities;
 using BG3Builds.Shared.Enums;
 using HtmlAgilityPack;
 
@@ -47,14 +48,15 @@ public static class AmuletScraper
             var columnNumber = 1;
             var amuletName = string.Empty;
             var amuletWikiUrl = string.Empty;
+            var amuletIconUrl = string.Empty;
 
             foreach (var column in amuletRow.QuerySelectorAll("td"))
             {
                 switch (columnNumber)
                 {
                     case (int)Columns.AmuletName:
-                        amuletName = column.QuerySelector("p a span").InnerText.Trim();
-                        amuletWikiUrl = column.QuerySelector("p a").GetAttributeValue("href", string.Empty);
+                        (amuletName, amuletWikiUrl, amuletIconUrl) =
+                            ScraperUtility.ScrapeObjectNameFromTablesorter(column);
                         break;
                 }
 
@@ -65,7 +67,8 @@ public static class AmuletScraper
             {
                 AmuletId = Guid.NewGuid(),
                 Name = HttpUtility.HtmlDecode(amuletName),
-                WikiUrl = amuletWikiUrl
+                WikiUrl = amuletWikiUrl,
+                IconUrl = amuletIconUrl
             };
         }
     }

@@ -1,6 +1,7 @@
 using System.Web;
 using BG3Builds.Database;
 using BG3Builds.Database.Entities;
+using BG3Builds.Scraper.Utilities;
 using BG3Builds.Shared.Enums;
 using HtmlAgilityPack;
 
@@ -50,14 +51,14 @@ public static class FootwearScraper
             var columnNumber = 1;
             var footwearName = string.Empty;
             var footwearWikiUrl = string.Empty;
+            var footwearIconUrl = string.Empty;
 
             foreach (var column in footwearRow.QuerySelectorAll("td"))
             {
                 switch (columnNumber)
                 {
                     case (int)Columns.FootwearName:
-                        footwearName = column.QuerySelector("p a span").InnerText.Trim();
-                        footwearWikiUrl = column.QuerySelector("p a").GetAttributeValue("href", string.Empty);
+                        (footwearName, footwearWikiUrl, footwearIconUrl) = ScraperUtility.ScrapeObjectNameFromTablesorter(column);
                         break;
                 }
 
@@ -69,7 +70,8 @@ public static class FootwearScraper
                 FootwearId = Guid.NewGuid(),
                 Name = HttpUtility.HtmlDecode(footwearName),
                 ArmourProficiency = armourProficiency,
-                WikiUrl = footwearWikiUrl
+                WikiUrl = footwearWikiUrl,
+                IconUrl = footwearIconUrl
             };
         }
     }

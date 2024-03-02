@@ -1,6 +1,7 @@
 using System.Web;
 using BG3Builds.Database;
 using BG3Builds.Database.Entities;
+using BG3Builds.Scraper.Utilities;
 using BG3Builds.Shared.Enums;
 using HtmlAgilityPack;
 
@@ -42,34 +43,34 @@ public static class WeaponScraper
         var columnNumber = 1;
         var weaponName = string.Empty;
         var weaponWikiUrl = string.Empty;
+        var weaponIconUrl = string.Empty;
         var weaponDamage = string.Empty;
         var weaponDamageType = DamageType.Acid;
         var weaponExtraDamage = string.Empty;
         var weaponExtraDamageType = DamageType.Acid;
 
-        foreach (var attribute in weaponAttributes)
+        foreach (var column in weaponAttributes)
         {
             switch (columnNumber)
             {
                 case (int)Columns.WeaponName:
-                    weaponName = attribute.QuerySelector("p a span").InnerText.Trim();
-                    weaponWikiUrl = attribute.QuerySelector("p a").GetAttributeValue("href", string.Empty);
+                    (weaponName, weaponWikiUrl, weaponIconUrl) = ScraperUtility.ScrapeObjectNameFromTablesorter(column);
                     break;
 
                 case (int)Columns.WeaponDamage:
-                    weaponDamage = attribute.InnerText.Trim();
+                    weaponDamage = column.InnerText.Trim();
                     break;
 
                 case (int)Columns.WeaponDamageType:
-                    weaponDamageType = attribute.InnerText.Trim().ToDamageType();
+                    weaponDamageType = column.InnerText.Trim().ToDamageType();
                     break;
 
                 case (int)Columns.WeaponExtraDamage:
-                    weaponExtraDamage = attribute.InnerText.Trim();
+                    weaponExtraDamage = column.InnerText.Trim();
                     break;
 
                 case (int)Columns.WeaponExtraDamageType:
-                    weaponExtraDamageType = attribute.InnerText.Trim().ToDamageType();
+                    weaponExtraDamageType = column.InnerText.Trim().ToDamageType();
                     break;
             }
 
@@ -81,6 +82,7 @@ public static class WeaponScraper
             WeaponId = Guid.NewGuid(),
             Name = HttpUtility.HtmlDecode(weaponName),
             WikiUrl = weaponWikiUrl,
+            IconUrl = weaponIconUrl,
             ImageId = default,
             Damage = weaponDamage,
             DamageType = weaponDamageType,

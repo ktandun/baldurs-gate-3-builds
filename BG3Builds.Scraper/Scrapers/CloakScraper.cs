@@ -1,6 +1,7 @@
 using System.Web;
 using BG3Builds.Database;
 using BG3Builds.Database.Entities;
+using BG3Builds.Scraper.Utilities;
 using HtmlAgilityPack;
 
 namespace BG3Builds.Scraper.Scrapers;
@@ -45,14 +46,15 @@ public static class CloakScraper
             var columnNumber = 1;
             var cloakName = string.Empty;
             var cloakWikiUrl = string.Empty;
+            var cloakIconUrl = string.Empty;
 
             foreach (var column in cloakRow.QuerySelectorAll("td"))
             {
                 switch (columnNumber)
                 {
                     case (int)Columns.CloakName:
-                        cloakName = column.QuerySelector("p a span").InnerText.Trim();
-                        cloakWikiUrl = column.QuerySelector("p a").GetAttributeValue("href", string.Empty);
+                        (cloakName, cloakWikiUrl, cloakIconUrl) =
+                            ScraperUtility.ScrapeObjectNameFromTablesorter(column);
                         break;
                 }
 
@@ -63,7 +65,8 @@ public static class CloakScraper
             {
                 CloakId = Guid.NewGuid(),
                 Name = HttpUtility.HtmlDecode(cloakName),
-                WikiUrl = cloakWikiUrl
+                WikiUrl = cloakWikiUrl,
+                IconUrl = cloakIconUrl
             };
         }
     }

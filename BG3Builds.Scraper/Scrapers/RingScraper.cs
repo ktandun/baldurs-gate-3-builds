@@ -1,6 +1,7 @@
 using System.Web;
 using BG3Builds.Database;
 using BG3Builds.Database.Entities;
+using BG3Builds.Scraper.Utilities;
 using BG3Builds.Shared.Enums;
 using HtmlAgilityPack;
 
@@ -47,14 +48,14 @@ public static class RingScraper
             var columnNumber = 1;
             var ringName = string.Empty;
             var ringWikiUrl = string.Empty;
+            var ringIconUrl = string.Empty;
 
             foreach (var column in ringRow.QuerySelectorAll("td"))
             {
                 switch (columnNumber)
                 {
                     case (int)Columns.RingName:
-                        ringName = column.QuerySelector("p a span").InnerText.Trim();
-                        ringWikiUrl = column.QuerySelector("p a").GetAttributeValue("href", string.Empty);
+                        (ringName, ringWikiUrl, ringIconUrl) = ScraperUtility.ScrapeObjectNameFromTablesorter(column);
                         break;
                 }
 
@@ -65,7 +66,8 @@ public static class RingScraper
             {
                 RingId = Guid.NewGuid(),
                 Name = HttpUtility.HtmlDecode(ringName),
-                WikiUrl = ringWikiUrl
+                WikiUrl = ringWikiUrl,
+                IconUrl = ringIconUrl
             };
         }
     }
