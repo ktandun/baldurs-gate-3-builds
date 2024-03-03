@@ -11,7 +11,7 @@ public class HeadwearEntity : IHasIconUrl
     public required string Name { get; set; }
     public required string WikiUrl { get; set; }
     public required string IconUrl { get; set; }
-    public required ArmourProficiency HeadwearProficiency { get; set; }
+    public required ArmourProficiency ArmourProficiency { get; set; }
     public Guid ImageId { get; set; }
 
     public class HeadwearEntityConfiguration : IEntityTypeConfiguration<HeadwearEntity>

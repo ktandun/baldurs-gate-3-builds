@@ -78,7 +78,7 @@ public static class HeadwearScraper
             {
                 HeadwearId = Guid.NewGuid(),
                 Name = HttpUtility.HtmlDecode(headwearName),
-                HeadwearProficiency = armourProficiency,
+                ArmourProficiency = armourProficiency,
                 WikiUrl = headwearWikiUrl,
                 IconUrl = headwearIconUrl
             };

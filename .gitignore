@@ -11,6 +11,7 @@
 *.userosscache
 *.sln.docstates
 *.png
+bg3objects.json
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs

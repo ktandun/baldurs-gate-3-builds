@@ -1,4 +1,5 @@
 ﻿using BG3Builds.Database;
+using BG3Builds.Scraper.Generators;
 using BG3Builds.Scraper.Scrapers;
 
 const string connectionString = "Host=localhost;Database=bg3builds;Username=postgres;Password=password";
@@ -19,3 +20,7 @@ RingScraper.Scrape(connectionString, "./HtmlResources/rings.html");
 WeaponScraper.Scrape(connectionString, "./HtmlResources/weapons.html");
 
 await ObjectImageScraper.ScrapeAsync(connectionString);
+
+FeatScraper.Scrape(connectionString, "./HtmlResources/feats.html");
+
+JsonGenerator.GenerateJson(connectionString);

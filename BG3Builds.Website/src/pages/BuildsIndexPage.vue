@@ -1,119 +1,67 @@
 <script setup lang="ts">
-import sorcererImg from "@/assets/classes/sorcerer.png";
-import warlockImg from "@/assets/classes/warlock.png";
+import Level from "@components/Level.vue";
+import { ref } from "vue";
 
 const buildItems = [
   {
     id: 1,
     head: {
       name: "Dark Justiciar Mask",
-      imgSrc:
-        "https://bg3.wiki/w/images/3/3d/Dark_Justiciar_Mask_Unfaded_Icon.png",
+      imgSrc: "/images/equipments/Dark_Justiciar_Mask_Unfaded_Icon.png",
     },
     cloak: {
       name: "Cindermoth Cloak",
-      imgSrc:
-        "https://bg3.wiki/w/images/a/ad/Cindermoth_Cloak_Unfaded_Icon.png",
+      imgSrc: "/images/equipments/Cindermoth_Cloak_Unfaded_Icon.png",
     },
     arms: {
       name: "Herbalists' Gloves",
-      imgSrc:
-        "https://bg3.wiki/w/images/c/cb/Gloves_Leather_1_Unfaded_Icon.png",
+      imgSrc: "/images/equipments/Gloves_Leather_1_Unfaded_Icon.png",
     },
     armour: {
       name: "Blazer of Benevolence",
-      imgSrc:
-        "https://bg3.wiki/w/images/9/9b/Blazer_of_Benevolence_Unfaded_Icon.png",
+      imgSrc: "/images/equipments/Blazer_of_Benevolence_Unfaded_Icon.png",
     },
   },
 ];
 
-const levels = [
+let levels = ref([
   {
-    id: 1,
-    imgSrc: sorcererImg,
-    name: "Sorcerer",
-    skills: "Firebolt, Bone Chill",
-    feat: "",
+    value: {
+      id: 1,
+      imgSrc: "/images/classes/sorcerer.png",
+      name: "Sorcerer",
+      skills: "Firebolt, Bone Chill",
+      feat: "",
+    },
   },
-  {
-    id: 2,
-    imgSrc: sorcererImg,
-    name: "Sorcerer",
-    skills: "Firebolt, Bone Chill",
-    feat: "",
-  },
-  {
-    id: 3,
-    imgSrc: sorcererImg,
-    name: "Sorcerer",
-    skills: "Firebolt, Bone Chill",
-    feat: "",
-  },
-  {
-    id: 4,
-    imgSrc: sorcererImg,
-    name: "Sorcerer",
-    skills: "Firebolt, Bone Chill",
-    feat: "Alert",
-  },
-  {
-    id: 5,
-    imgSrc: sorcererImg,
-    name: "Sorcerer",
-    skills: "Firebolt, Bone Chill",
-    feat: "",
-  },
-  {
-    id: 6,
-    imgSrc: warlockImg,
-    name: "Warlock",
-    skills: "Eldritch Blast",
-    feat: "",
-  },
-  {
-    id: 7,
-    imgSrc: warlockImg,
-    name: "Warlock",
-    skills: "Eldritch Blast",
-    feat: "",
-  },
-  {
-    id: 8,
-    imgSrc: warlockImg,
-    name: "Warlock",
-    skills: "Eldritch Blast",
-    feat: "",
-  },
-  {
-    id: 9,
-    imgSrc: warlockImg,
-    name: "Warlock",
-    skills: "Eldritch Blast",
-    feat: "",
-  },
-  {
-    id: 10,
-    imgSrc: warlockImg,
-    name: "Warlock",
-    skills: "Eldritch Blast",
-    feat: "",
-  },
-  {
-    id: 11,
-    imgSrc: warlockImg,
-    name: "Warlock",
-    skills: "Eldritch Blast",
-    feat: "",
-  },
-  {
-    id: 12,
-    imgSrc: warlockImg,
-    name: "Warlock",
-    skills: "Eldritch Blast",
-    feat: "",
-  },
-];
+]);
+
+const removeClicked = function () {
+  if (levels.value.length <= 1) return;
+
+  levels.value.splice(levels.value.length - 2, 1);
+};
+
+const duplicateClicked = function () {
+  if (levels.value.length >= 12) return;
+
+  const maxId = levels.value
+    .map((l) => l.value.id)
+    .reduce((a, b) => Math.max(a, b), -Infinity);
+
+  levels.value = [
+    ...levels.value,
+    {
+      value: {
+        id: maxId + 1,
+        imgSrc: "/images/classes/sorcerer.png",
+        name: "Cat",
+        skills: "Firebolt, Bone Chill",
+        feat: "",
+      },
+    },
+  ];
+};
 </script>
 
 <template>
@@ -122,11 +70,21 @@ const levels = [
       <div class="text-2xl font-black">Necromancer Sorlock</div>
       <div class="text-sm flex gap-2 divide-x divide-double divide-slate-500">
         <div class="pr-2">
-          <img :src="sorcererImg" height="30" width="30" class="inline" />
+          <img
+            src="/images/classes/sorcerer.png"
+            height="30"
+            width="30"
+            class="inline"
+          />
           <span class="font-semibold">Sorcerer 5</span>
         </div>
         <div class="px-2">
-          <img :src="warlockImg" height="30" width="30" class="inline" />
+          <img
+            src="/images/classes/warlock.png"
+            height="30"
+            width="30"
+            class="inline"
+          />
           <span class="font-semibold">Warlock 7</span>
         </div>
       </div>
@@ -181,6 +139,7 @@ const levels = [
     <div class="px-2 py-1 text-primary">
       <div class="text-lg font-black">Levels</div>
     </div>
+    {{ levels }}
 
     <div class="p-2 text-primary">
       <div class="table">
@@ -194,38 +153,12 @@ const levels = [
           </div>
         </div>
         <div class="table-row-group text-left">
-          <div class="table-row" v-for="level in levels" :key="level.id">
-            <div class="table-cell text-xs px-2 italic">
-              <div>
-                <img
-                  :src="level.imgSrc"
-                  width="20"
-                  height="20"
-                  class="inline"
-                />
-                {{ level.name }}
-              </div>
-            </div>
-            <div class="table-cell text-xs px-2 italic">
-              <div>
-                {{ level.name }}
-              </div>
-            </div>
-            <div class="table-cell text-xs px-2 italic">
-              <div>
-                {{ level.skills }}
-              </div>
-            </div>
-            <div class="table-cell text-xs px-2 italic">
-              <div>
-                {{ level.feat }}
-              </div>
-            </div>
-            <div class="table-cell text-xs px-2 italic">
-              <div>
-                {{ level.feat }}
-              </div>
-            </div>
+          <div class="table-row" v-for="level in levels" :key="level.value.id">
+            <Level
+              v-model="level.value"
+              @duplicate="duplicateClicked"
+              @remove="removeClicked"
+            ></Level>
           </div>
         </div>
       </div>

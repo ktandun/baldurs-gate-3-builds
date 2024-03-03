@@ -1,23 +1,24 @@
+using BG3Builds.Shared.Enums;
 using BG3Builds.Shared.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace BG3Builds.Database.Entities;
 
-public class AmuletEntity : IHasIconUrl
+public class FeatEntity : IHasIconUrl
 {
-    public required Guid AmuletId { get; set; }
+    public required Guid FeatId { get; set; }
     public required string Name { get; set; }
+    public required FeatExtraChoice ExtraChoice { get; set; }
     public required string WikiUrl { get; set; }
     public required string IconUrl { get; set; }
-    public Guid ImageId { get; set; }
 
-    public class AmuletEntityConfiguration : IEntityTypeConfiguration<AmuletEntity>
+    public class FeatEntityConfiguration : IEntityTypeConfiguration<FeatEntity>
     {
-        public void Configure(EntityTypeBuilder<AmuletEntity> builder)
+        public void Configure(EntityTypeBuilder<FeatEntity> builder)
         {
-            builder.ToTable("amulets");
-            builder.HasKey(c => c.AmuletId);
+            builder.ToTable("feats");
+            builder.HasKey(c => c.FeatId);
             builder.Property(c => c.Name).HasMaxLength(100).IsRequired();
             builder.Property(c => c.WikiUrl).HasMaxLength(200).IsRequired();
             builder.Property(c => c.IconUrl).HasMaxLength(200).IsRequired();

@@ -31,6 +31,7 @@ public static class ObjectImageScraper
         var projectDirectory = Directory.GetParent(Environment.CurrentDirectory)!
             .Parent!
             .Parent!
+            .Parent!
             .FullName;
 
         using var client = new HttpClient();
@@ -38,15 +39,14 @@ public static class ObjectImageScraper
         foreach (var iconUrl in iconUrls)
         {
             var uri = Bg3WikiConstants.WikiBaseUrl + iconUrl;
-            var imagePath = Path.Join(projectDirectory, "ImageResources", HttpUtility.UrlDecode(Path.GetFileName(uri)));
+            var imagePath = Path.Join(projectDirectory, "BG3Builds.Website", "public", "images", "equipments", HttpUtility.UrlDecode(Path.GetFileName(uri)));
 
-            if (!Path.Exists(imagePath))
-            {
-                await using var stream = await client.GetStreamAsync(uri);
-                await using var fileStream = new FileStream(imagePath, FileMode.OpenOrCreate);
+            if (Path.Exists(imagePath)) continue;
 
-                await stream.CopyToAsync(fileStream);
-            }
+            await using var stream = await client.GetStreamAsync(uri);
+            await using var fileStream = new FileStream(imagePath, FileMode.OpenOrCreate);
+
+            await stream.CopyToAsync(fileStream);
         }
     }
 }
