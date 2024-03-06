@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import Level from "@components/Level.vue";
+import bg3objects from "@/assets/bg3objects.json";
+import Autocomplete from "@components/Autocomplete.vue";
 import { ref } from "vue";
 
 const buildItems = [
@@ -108,10 +110,7 @@ const duplicateClicked = function () {
         <div class="table-row-group text-left">
           <div class="table-row" v-for="item in buildItems" :key="item.id">
             <div class="table-cell text-xs px-2 italic">
-              <div>
-                {{ item.head.name }}
-              </div>
-              <img :src="item.head.imgSrc" />
+              <Autocomplete :options="bg3objects.headwears"></Autocomplete>
             </div>
             <div class="table-cell text-xs px-2 italic">
               <div>
