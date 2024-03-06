@@ -1,28 +1,39 @@
 <script setup lang="ts">
 import bg3objects from "@/assets/bg3objects.json";
-import ClassChoiceSelect from "@/components/ClassChoiceSelect.vue";
-import FeatExtraChoiceSelect from "@/components/FeatExtraChoiceSelect.vue";
-import SubclassChoiceSelect from "@/components/SubclassChoiceSelect.vue";
 import { ClassChoice } from "@/enums/ClassChoice";
-import { Subclass } from "@/enums/Subclass";
+import FeatExtraChoiceSelect from "@/components/FeatExtraChoiceSelect.vue";
+import ChoiceSelect from "./ChoiceSelect.vue";
+import SubclassChoiceSelect from "@/components/SubclassChoiceSelect.vue";
 import { FeatExtraChoice } from "@/enums/FeatExtraChoice";
-import { ref } from "vue";
 
 const level = defineModel<any>();
 const emits = defineEmits(["duplicate", "remove"]);
-
-let classChoice = ref<ClassChoice | undefined>();
-let featChoice = ref<string | undefined>();
-let subclassChoice = ref<Subclass | undefined>();
 </script>
 
 <template>
-  <div class="table-cell text-xs px-2 py-1 italic">
+  <div class="table-cell text-xs px-2 py-1">
     <div>
-      <ClassChoiceSelect v-model="level.class"></ClassChoiceSelect>
+      <ChoiceSelect
+        v-model="level.class"
+        :options="[
+          { id: ClassChoice.Barbarian, name: 'Barbarian' },
+          { id: ClassChoice.Bard, name: 'Bard' },
+          { id: ClassChoice.Cleric, name: 'Cleric' },
+          { id: ClassChoice.Druid, name: 'Druid' },
+          { id: ClassChoice.Fighter, name: 'Fighter' },
+          { id: ClassChoice.Monk, name: 'Monk' },
+          { id: ClassChoice.Paladin, name: 'Paladin' },
+          { id: ClassChoice.Ranger, name: 'Ranger' },
+          { id: ClassChoice.Rogue, name: 'Rogue' },
+          { id: ClassChoice.Sorcerer, name: 'Sorcerer' },
+          { id: ClassChoice.Warlock, name: 'Warlock' },
+          { id: ClassChoice.Wizard, name: 'Wizard' },
+        ]"
+      >
+      </ChoiceSelect>
     </div>
   </div>
-  <div class="table-cell text-xs px-2 italic">
+  <div class="table-cell text-xs px-2">
     <div>
       <SubclassChoiceSelect
         v-model="level.subclass"
