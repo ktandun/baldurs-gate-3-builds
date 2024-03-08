@@ -2,6 +2,19 @@
   <div class="text-yellow-500 text-lg font-black font-mono">
     Levels Progression
   </div>
+  <div
+    class="text-md flex gap-2 divide-x divide-double divide-slate-500 text-primary"
+  >
+    <div
+      v-for="(c, index) in levelBuildSummary"
+      :key="c.name"
+      :class="{ 'pl-2': index > 0, 'pr-2': index == 0 }"
+      class="my-2"
+    >
+      <img :src="c.imageUrl" height="30" width="30" class="inline" />
+      <span class="font-semibold">{{ c.name }} {{ c.level }}</span>
+    </div>
+  </div>
   <table class="mb-1">
     <thead class="text-primary font-semibold text-left">
       <th class="min-w-[180px]">Class</th>
@@ -83,17 +96,21 @@
       </tr>
     </tbody>
   </table>
-  <ActionButton @click="addClicked">+</ActionButton>
+  <ActionButton @click="addClicked">+ progression</ActionButton>
 </template>
 
 <script setup lang="ts">
-import { ClassChoice } from "@/enums/ClassChoice";
+import {
+  ClassChoice,
+  getClassImageUrl,
+  getClassName,
+} from "@/enums/ClassChoice";
 import ChoiceSelect from "./ChoiceSelect.vue";
 import SubclassChoiceSelect from "@/components/SubclassChoiceSelect.vue";
 // import FeatExtraChoiceSelect from "@/components/FeatExtraChoiceSelect.vue";
 // import bg3objects from "@/assets/bg3objects.json";
 // import { FeatExtraChoice } from "@/enums/FeatExtraChoice";
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import ActionButton from "./BuildingBlocks/ActionButton.vue";
 
 const emits = defineEmits(["duplicate", "remove"]);
@@ -113,7 +130,6 @@ let levels = ref([
 
 //   levels.value.splice(levels.value.length - 2, 1);
 // };
-
 const addClicked = function () {
   if (levels.value.length >= 12) return;
 
@@ -132,4 +148,32 @@ const addClicked = function () {
     },
   ];
 };
+
+const levelBuildSummary = computed(() => {
+  const result: {
+    class: ClassChoice;
+    name: string;
+    level: number;
+    imageUrl: string;
+  }[] = [];
+
+  levels.value.forEach((l) => {
+    if (l.value.class) {
+      const existingIndex = result.findIndex((r) => r.class === l.value.class);
+
+      if (existingIndex !== -1) {
+        result[existingIndex].level += 1;
+      } else {
+        result.push({
+          class: l.value.class,
+          name: getClassName(l.value.class),
+          level: 1,
+          imageUrl: getClassImageUrl(l.value.class),
+        });
+      }
+    }
+  });
+
+  return result;
+});
 </script>

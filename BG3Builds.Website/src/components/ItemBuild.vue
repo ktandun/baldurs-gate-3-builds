@@ -284,7 +284,7 @@
         </tr>
         <tr>
           <td>
-            <ActionButton @click="addClicked()">+</ActionButton>
+            <ActionButton @click="addClicked()">+ progression</ActionButton>
           </td>
           <td
             v-for="(buildItem, index) in buildItems"

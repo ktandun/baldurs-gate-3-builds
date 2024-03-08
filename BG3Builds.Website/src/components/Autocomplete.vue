@@ -16,8 +16,9 @@
       class="list-none"
     >
       <li
+        @mouseenter="keyboardSelector = option"
         @click="optionSelected(option.id)"
-        class="px-2 py-1 bg-gray-300 text-slate-800 hover:bg-red-200 z-10 relative"
+        class="px-2 py-1 bg-gray-300 text-slate-800 z-10 relative"
         :class="{ 'bg-red-200': option.id == keyboardSelector?.id }"
       >
         <img

@@ -1,33 +1,23 @@
 <script setup lang="ts">
 import LevelBuild from "@components/LevelBuild.vue";
 import ItemBuild from "@components/ItemBuild.vue";
+import { ref } from "vue";
+
+let name = ref<string>("Stealth Gloomstalker");
 </script>
 
 <template>
-  <div class="bg-slate-600 rounded-md p-2">
+  <div class="bg-slate-700 rounded-md p-4">
+    <div class="text-primary text-xs">
+      give this build a name <span>&#10549;</span>
+    </div>
     <div class="mb-2 text-primary">
-      <div class="text-yellow-500 text-2xl font-black font-mono">
-        Necromancer Sorlock
-      </div>
-      <div class="text-sm flex gap-2 divide-x divide-double divide-slate-500">
-        <div class="pr-2">
-          <img
-            src="/images/classes/sorcerer.png"
-            height="30"
-            width="30"
-            class="inline"
-          />
-          <span class="font-semibold">Sorcerer 5</span>
-        </div>
-        <div>
-          <img
-            src="/images/classes/warlock.png"
-            height="30"
-            width="30"
-            class="inline"
-          />
-          <span class="font-semibold">Warlock 7</span>
-        </div>
+      <div class="text-yellow-500 text-3xl font-black font-mono">
+        <input
+          v-model="name"
+          class="bg-transparent border-b-2 border-slate-600 min-w-[50rem]"
+          maxlength="40"
+        />
       </div>
     </div>
 
