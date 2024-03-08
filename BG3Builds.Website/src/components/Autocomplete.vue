@@ -44,15 +44,15 @@ const emits = defineEmits<{ selected: [id: number | string] }>();
 
 let input = ref<string>("");
 let keyboardSelector = ref<OptionModel | null>(null);
-let showOptions = ref<boolean>(true);
+let showOptions = ref<boolean>(false);
 let filteredOptions = computed(() => {
   if (!props.options) return [];
 
   const filtered = props.options
     .filter((o) => {
-      if (input?.value) {
-        return o.name.toLowerCase().includes(input.value.toLocaleLowerCase());
-      }
+      return input?.value
+        ? o.name.toLowerCase().includes(input.value.toLocaleLowerCase())
+        : true;
     })
     .slice(0, 10);
 

@@ -7,11 +7,12 @@ let name = ref<string>("Stealth Gloomstalker");
 </script>
 
 <template>
-  <div class="bg-slate-700 rounded-md p-4">
+  <div class="bg-slate-700 rounded-md p-4 flex flex-col gap-4">
     <div class="text-primary text-xs">
-      give this build a name <span>&#10549;</span>
+      <span class="text-yellow-500">protip:</span> give this build a name
+      <span>&#10549;</span>
     </div>
-    <div class="mb-2 text-primary">
+    <div class="text-primary">
       <div class="text-yellow-500 text-3xl font-black font-mono">
         <input
           v-model="name"
@@ -21,7 +22,7 @@ let name = ref<string>("Stealth Gloomstalker");
       </div>
     </div>
 
-    <div class="mb-2">
+    <div>
       <ItemBuild></ItemBuild>
     </div>
 

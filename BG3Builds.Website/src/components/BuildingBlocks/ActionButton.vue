@@ -4,7 +4,7 @@ const emits = defineEmits(["click"]);
 
 <template>
   <button
-    class="bg-gray-300 hover:bg-gray-400 px-2 rounded-sm text-slate-800"
+    class="bg-amber-100 hover:bg-gray-400 px-2 rounded-sm text-slate-800"
     @click="emits('click')"
   >
     <slot></slot>

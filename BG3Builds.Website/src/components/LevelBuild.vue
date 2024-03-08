@@ -1,71 +1,84 @@
 <template>
-  <div class="text-yellow-500 text-lg font-black font-mono">
-    Levels Progression
-  </div>
-  <div
-    class="text-md flex gap-2 divide-x divide-double divide-slate-500 text-primary"
-  >
-    <div
-      v-for="(c, index) in levelBuildSummary"
-      :key="c.name"
-      :class="{ 'pl-2': index > 0, 'pr-2': index == 0 }"
-      class="my-2"
-    >
-      <img :src="c.imageUrl" height="30" width="30" class="inline" />
-      <span class="font-semibold">{{ c.name }} {{ c.level }}</span>
+  <div class="flex flex-col gap-2">
+    <div class="text-yellow-500 text-lg font-black font-mono">
+      Levels Progression
     </div>
-  </div>
-  <table class="mb-1">
-    <thead class="text-primary font-semibold text-left">
-      <th class="min-w-[60px]">Level</th>
-      <th class="min-w-[180px]">Class</th>
-      <th class="min-w-[200px]">Subclass</th>
-      <th class="min-w-[200px]">Skills</th>
-      <th class="min-w-[200px]">Feat</th>
-      <th class="min-w-[200px]">Feat Extra Choices</th>
-    </thead>
-    <tbody>
-      <tr v-for="level in levels" :key="level.value.id">
-        <td
-          v-if="level.value.respec"
-          class="text-gray-400 italic text-center"
-          colspan="6"
+    <div class="text-sm flex text-primary flex-col">
+      <div
+        v-for="(group, groupIndex) in levelBuildSummary"
+        :key="groupIndex"
+        :class="{ 'pl-2': groupIndex > 0 }"
+        class="flex flex-row gap-2"
+      >
+        <span v-if="groupIndex > 0">&#10551;</span>
+        <div
+          v-for="(progression, progressionIndex) in group"
+          :key="progressionIndex"
+          class="flex flex-row gap-2"
         >
-          -- respec here --
-        </td>
-        <template v-else>
-          <td class="text-primary">{{ level.value.charLevel }}</td>
-          <td>
-            <div>
-              <ChoiceSelect
-                v-model="level.value.class"
-                :options="[
-                  { id: ClassChoice.Barbarian, name: 'Barbarian' },
-                  { id: ClassChoice.Bard, name: 'Bard' },
-                  { id: ClassChoice.Cleric, name: 'Cleric' },
-                  { id: ClassChoice.Druid, name: 'Druid' },
-                  { id: ClassChoice.Fighter, name: 'Fighter' },
-                  { id: ClassChoice.Monk, name: 'Monk' },
-                  { id: ClassChoice.Paladin, name: 'Paladin' },
-                  { id: ClassChoice.Ranger, name: 'Ranger' },
-                  { id: ClassChoice.Rogue, name: 'Rogue' },
-                  { id: ClassChoice.Sorcerer, name: 'Sorcerer' },
-                  { id: ClassChoice.Warlock, name: 'Warlock' },
-                  { id: ClassChoice.Wizard, name: 'Wizard' },
-                ]"
-              >
-              </ChoiceSelect>
-            </div>
+          <img
+            :src="progression.imageUrl"
+            height="22"
+            width="22"
+            class="inline"
+          />
+          <span class="italic"
+            >{{ progression.name }} [{{ progression.level }}]</span
+          >
+        </div>
+      </div>
+    </div>
+    <table class="table-auto">
+      <thead class="text-primary font-semibold text-left">
+        <th class="min-w-[60px]">Level</th>
+        <th class="min-w-[180px]">Class</th>
+        <th class="min-w-[200px]">Subclass</th>
+        <th class="min-w-[200px]">Key Skills</th>
+        <th class="min-w-[200px]">Feat</th>
+        <th class="min-w-[200px]">Feat Extra Choices</th>
+      </thead>
+      <tbody>
+        <tr v-for="(level, index) in levels" :key="level.value.id">
+          <td
+            v-if="level.value.respec"
+            class="text-gray-400 italic text-center"
+            colspan="3"
+          >
+            -- respec here --
           </td>
-          <td>
-            <div>
-              <SubclassChoiceSelect
-                v-model="level.value.subclass"
-                :class-choice="level.value.class"
-              ></SubclassChoiceSelect>
-            </div>
-          </td>
-          <!--
+          <template v-else>
+            <td class="text-primary">{{ level.value.charLevel }}</td>
+            <td>
+              <div>
+                <ChoiceSelect
+                  v-model="level.value.class"
+                  :options="[
+                    { id: ClassChoice.Barbarian, name: 'Barbarian' },
+                    { id: ClassChoice.Bard, name: 'Bard' },
+                    { id: ClassChoice.Cleric, name: 'Cleric' },
+                    { id: ClassChoice.Druid, name: 'Druid' },
+                    { id: ClassChoice.Fighter, name: 'Fighter' },
+                    { id: ClassChoice.Monk, name: 'Monk' },
+                    { id: ClassChoice.Paladin, name: 'Paladin' },
+                    { id: ClassChoice.Ranger, name: 'Ranger' },
+                    { id: ClassChoice.Rogue, name: 'Rogue' },
+                    { id: ClassChoice.Sorcerer, name: 'Sorcerer' },
+                    { id: ClassChoice.Warlock, name: 'Warlock' },
+                    { id: ClassChoice.Wizard, name: 'Wizard' },
+                  ]"
+                >
+                </ChoiceSelect>
+              </div>
+            </td>
+            <td>
+              <div>
+                <SubclassChoiceSelect
+                  v-model="level.value.subclass"
+                  :class-choice="level.value.class"
+                ></SubclassChoiceSelect>
+              </div>
+            </td>
+            <!--
         <td class="italic">
           <div>
             {{ level.skills }}
@@ -98,18 +111,21 @@
         </td>
 
 -->
-          <td class="italic">
-            <div class="flex gap-2">
-              <ActionButton @click="removeClicked">remove</ActionButton>
-            </div>
-          </td>
-        </template>
-      </tr>
-    </tbody>
-  </table>
-  <div class="flex gap-1">
-    <ActionButton @click="addClicked(false)">+ progression</ActionButton>
-    <ActionButton @click="addClicked(true)">+ respec</ActionButton>
+            <td class="italic">
+              <div class="flex gap-2">
+                <ActionButton @click="removeClicked(index)"
+                  >remove</ActionButton
+                >
+              </div>
+            </td>
+          </template>
+        </tr>
+      </tbody>
+    </table>
+    <div class="flex gap-1">
+      <ActionButton @click="addClicked(false)">+ progression</ActionButton>
+      <ActionButton @click="addClicked(true)">+ respec</ActionButton>
+    </div>
   </div>
 </template>
 
@@ -126,6 +142,7 @@ import SubclassChoiceSelect from "@/components/SubclassChoiceSelect.vue";
 // import { FeatExtraChoice } from "@/enums/FeatExtraChoice";
 import { computed, ref } from "vue";
 import ActionButton from "./BuildingBlocks/ActionButton.vue";
+import { cloneDeep } from "lodash";
 
 const emits = defineEmits(["duplicate", "remove"]);
 
@@ -141,11 +158,15 @@ let levels = ref([
   },
 ]);
 
-const removeClicked = function () {
+const removeClicked = (index: number) => {
   if (levels.value.length <= 1) return;
 
-  levels.value.splice(levels.value.length - 2, 1);
+  levels.value.splice(index, 1);
+
+  removeDuplicateRespecs();
 };
+
+const removeDuplicateRespecs = () => {};
 
 const addClicked = (respec: boolean) => {
   const maxLevel = 12;
@@ -171,18 +192,43 @@ const addClicked = (respec: boolean) => {
   const lastClass = levels.value[levels.value.length - 1].value.class;
   const lastSubclass = levels.value[levels.value.length - 1].value.subclass;
 
-  levels.value = [
-    ...levels.value,
-    {
-      value: {
-        id: maxId + 1,
-        charLevel: -1,
-        class: lastClass,
-        subclass: lastSubclass,
-        respec: respec,
+  if (respec) {
+    levels.value = [
+      ...levels.value,
+      {
+        value: {
+          id: maxId + 1,
+          charLevel: -1,
+          class: lastClass,
+          subclass: lastSubclass,
+          respec: true,
+        },
       },
-    },
-  ];
+      ...cloneDeep(levelBuildsAfterLastRespec),
+      {
+        value: {
+          id: maxId + 1,
+          charLevel: -1,
+          class: null,
+          subclass: null,
+          respec: false,
+        },
+      },
+    ];
+  } else {
+    levels.value = [
+      ...levels.value,
+      {
+        value: {
+          id: maxId + 1,
+          charLevel: -1,
+          class: lastClass,
+          subclass: lastSubclass,
+          respec: false,
+        },
+      },
+    ];
+  }
 
   recalculateCharacterLevel();
 };
@@ -202,7 +248,14 @@ const recalculateCharacterLevel = () => {
 };
 
 const levelBuildSummary = computed(() => {
-  const result: {
+  const groupedProgressionSplitByRespec: {
+    class: ClassChoice;
+    name: string;
+    level: number;
+    imageUrl: string;
+  }[][] = [];
+
+  let levelProgression: {
     class: ClassChoice;
     name: string;
     level: number;
@@ -210,13 +263,18 @@ const levelBuildSummary = computed(() => {
   }[] = [];
 
   levels.value.forEach((l) => {
-    if (l.value.class) {
-      const existingIndex = result.findIndex((r) => r.class === l.value.class);
+    if (l.value.respec) {
+      groupedProgressionSplitByRespec.push(levelProgression);
+      levelProgression = [];
+    } else if (l.value.class) {
+      const existingIndex = levelProgression.findIndex(
+        (r) => r.class === l.value.class
+      );
 
       if (existingIndex !== -1) {
-        result[existingIndex].level += 1;
+        levelProgression[existingIndex].level += 1;
       } else {
-        result.push({
+        levelProgression.push({
           class: l.value.class,
           name: getClassName(l.value.class),
           level: 1,
@@ -226,6 +284,8 @@ const levelBuildSummary = computed(() => {
     }
   });
 
-  return result;
+  groupedProgressionSplitByRespec.push(levelProgression);
+
+  return groupedProgressionSplitByRespec;
 });
 </script>
