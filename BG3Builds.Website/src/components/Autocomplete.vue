@@ -1,36 +1,35 @@
 <template>
-  <input
-    v-model="input"
-    type="text"
-    class="text-black rounded-sm border-0 text-sm px-2 py-1 w-full"
-    @keyup.enter="enterPressed"
-    @keyup.down.stop="downPressed"
-    @keyup.up.stop="upPressed"
-    @input="showOptions = true"
-  />
-  <div class="absolute">
-    <ul
-      v-for="option in filteredOptions"
-      :key="option.id"
-      v-if="showOptions"
-      class="list-none"
-    >
-      <li
-        @mouseenter="keyboardSelector = option"
-        @click="optionSelected(option.id)"
-        class="px-2 py-1 bg-gray-300 text-slate-800 z-10 relative"
-        :class="{ 'bg-red-200': option.id == keyboardSelector?.id }"
-      >
-        <img
-          v-if="option.imageUrl"
-          :src="option.imageUrl"
-          width="25"
-          height="25"
-          class="inline"
-        />
-        {{ option.name }}
-      </li>
-    </ul>
+  <div class="static">
+    <input
+      v-model="input"
+      type="text"
+      class="text-black rounded-sm border-0 text-sm px-2 py-1 w-full inline-block"
+      @keyup.enter="enterPressed"
+      @keyup.down.stop="downPressed"
+      @keyup.up.stop="upPressed"
+      @input="showOptions = true"
+    />
+    <div class="absolute z-10 rounded-sm bg-gray-300 mt-1">
+      <ul v-if="showOptions" class="list-none">
+        <template v-for="option in filteredOptions" :key="option.id">
+          <li
+            @mouseenter="keyboardSelector = option"
+            @click="optionSelected(option.id)"
+            class="px-2 py-1 text-slate-800 rounded-sm"
+            :class="{ 'bg-red-200': option.id == keyboardSelector?.id }"
+          >
+            <img
+              v-if="option.imageUrl"
+              :src="option.imageUrl"
+              width="25"
+              height="25"
+              class="inline"
+            />
+            {{ option.name }}
+          </li>
+        </template>
+      </ul>
+    </div>
   </div>
 </template>
 

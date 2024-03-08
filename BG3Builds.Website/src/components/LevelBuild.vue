@@ -31,10 +31,10 @@
           class="text-gray-400 italic text-center"
           colspan="6"
         >
-          respec here
+          -- respec here --
         </td>
         <template v-else>
-          <td class="text-primary">1</td>
+          <td class="text-primary">{{ level.value.charLevel }}</td>
           <td>
             <div>
               <ChoiceSelect
@@ -97,12 +97,12 @@
           </div>
         </td>
 
-        <td class="italic">
-          <div class="flex gap-2">
-            <ActionButton @click="removeClicked">remove</ActionButton>
-          </div>
-        </td>
 -->
+          <td class="italic">
+            <div class="flex gap-2">
+              <ActionButton @click="removeClicked">remove</ActionButton>
+            </div>
+          </td>
         </template>
       </tr>
     </tbody>
@@ -135,36 +135,70 @@ let levels = ref([
       id: 1,
       class: null,
       subclass: null,
+      charLevel: 1,
       respec: false,
     },
   },
 ]);
 
-// const removeClicked = function () {
-//   if (levels.value.length <= 1) return;
+const removeClicked = function () {
+  if (levels.value.length <= 1) return;
 
-//   levels.value.splice(levels.value.length - 2, 1);
-// };
-const addClicked = function (respec: boolean) {
-  if (levels.value.filter((l) => l.value.respec === false).length >= 12) return;
+  levels.value.splice(levels.value.length - 2, 1);
+};
+
+const addClicked = (respec: boolean) => {
+  const maxLevel = 12;
+  const lastRespecIndex = levels.value.findLastIndex(
+    (l) => l.value.respec === true
+  );
+
+  const levelBuildsAfterLastRespec =
+    lastRespecIndex !== -1
+      ? levels.value
+          .slice(lastRespecIndex)
+          .filter((l) => l.value.respec === false)
+      : levels.value;
+
+  if (levelBuildsAfterLastRespec.length === maxLevel) return;
   if (respec && levels.value[levels.value.length - 1].value.respec === true)
     return;
 
   const maxId = levels.value
     .map((l) => l.value.id)
-    .reduce((a, b) => Math.max(a, b), -Infinity);
+    .reduce((a, b) => Math.max(a, b), 0);
+
+  const lastClass = levels.value[levels.value.length - 1].value.class;
+  const lastSubclass = levels.value[levels.value.length - 1].value.subclass;
 
   levels.value = [
     ...levels.value,
     {
       value: {
         id: maxId + 1,
-        class: null,
-        subclass: null,
+        charLevel: -1,
+        class: lastClass,
+        subclass: lastSubclass,
         respec: respec,
       },
     },
   ];
+
+  recalculateCharacterLevel();
+};
+
+const recalculateCharacterLevel = () => {
+  let levelCounter = 0;
+
+  levels.value.forEach((l) => {
+    if (l.value.respec) {
+      levelCounter = 0;
+    } else {
+      levelCounter++;
+    }
+
+    l.value.charLevel = levelCounter;
+  });
 };
 
 const levelBuildSummary = computed(() => {

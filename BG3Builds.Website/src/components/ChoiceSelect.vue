@@ -17,7 +17,7 @@ import { PropType, computed, ref } from "vue";
 const props = defineProps({ options: Array as PropType<OptionModel[]> });
 const emits = defineEmits<{ selected: [id: number | string] }>();
 
-let input = ref<string>("");
+let input = defineModel();
 let options = computed(() => {
   if (!props.options) return [];
 
