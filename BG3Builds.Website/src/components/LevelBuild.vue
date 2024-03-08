@@ -166,7 +166,16 @@ const removeClicked = (index: number) => {
   removeDuplicateRespecs();
 };
 
-const removeDuplicateRespecs = () => {};
+const removeDuplicateRespecs = () => {
+  if (levels.value.length >= 2) {
+    for (let i = 0; i < levels.value.length - 2; i++) {
+      if (levels.value[i].value.respec && levels.value[i + 1].value.respec) {
+        levels.value.splice(i, 1);
+        return;
+      }
+    }
+  }
+};
 
 const addClicked = (respec: boolean) => {
   const maxLevel = 12;
