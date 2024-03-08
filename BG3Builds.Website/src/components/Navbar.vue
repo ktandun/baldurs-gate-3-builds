@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { routeNames } from "@/routes";
 const tabs = [
-  { name: "builds", href: routeNames.builds, current: false },
-  { name: "your builds", href: routeNames.buildEdit, current: false },
+  { name: "Create Build", href: routeNames.builds, current: false },
+  { name: "Saved Builds", href: routeNames.buildEdit, current: false },
 ];
 </script>
 

@@ -17,6 +17,7 @@
   </div>
   <table class="mb-1">
     <thead class="text-primary font-semibold text-left">
+      <th class="min-w-[60px]">Level</th>
       <th class="min-w-[180px]">Class</th>
       <th class="min-w-[200px]">Subclass</th>
       <th class="min-w-[200px]">Skills</th>
@@ -25,37 +26,46 @@
     </thead>
     <tbody>
       <tr v-for="level in levels" :key="level.value.id">
-        <td>
-          <div>
-            <ChoiceSelect
-              v-model="level.value.class"
-              :options="[
-                { id: ClassChoice.Barbarian, name: 'Barbarian' },
-                { id: ClassChoice.Bard, name: 'Bard' },
-                { id: ClassChoice.Cleric, name: 'Cleric' },
-                { id: ClassChoice.Druid, name: 'Druid' },
-                { id: ClassChoice.Fighter, name: 'Fighter' },
-                { id: ClassChoice.Monk, name: 'Monk' },
-                { id: ClassChoice.Paladin, name: 'Paladin' },
-                { id: ClassChoice.Ranger, name: 'Ranger' },
-                { id: ClassChoice.Rogue, name: 'Rogue' },
-                { id: ClassChoice.Sorcerer, name: 'Sorcerer' },
-                { id: ClassChoice.Warlock, name: 'Warlock' },
-                { id: ClassChoice.Wizard, name: 'Wizard' },
-              ]"
-            >
-            </ChoiceSelect>
-          </div>
+        <td
+          v-if="level.value.respec"
+          class="text-gray-400 italic text-center"
+          colspan="6"
+        >
+          respec here
         </td>
-        <td>
-          <div>
-            <SubclassChoiceSelect
-              v-model="level.value.subclass"
-              :class-choice="level.value.class"
-            ></SubclassChoiceSelect>
-          </div>
-        </td>
-        <!--
+        <template v-else>
+          <td class="text-primary">1</td>
+          <td>
+            <div>
+              <ChoiceSelect
+                v-model="level.value.class"
+                :options="[
+                  { id: ClassChoice.Barbarian, name: 'Barbarian' },
+                  { id: ClassChoice.Bard, name: 'Bard' },
+                  { id: ClassChoice.Cleric, name: 'Cleric' },
+                  { id: ClassChoice.Druid, name: 'Druid' },
+                  { id: ClassChoice.Fighter, name: 'Fighter' },
+                  { id: ClassChoice.Monk, name: 'Monk' },
+                  { id: ClassChoice.Paladin, name: 'Paladin' },
+                  { id: ClassChoice.Ranger, name: 'Ranger' },
+                  { id: ClassChoice.Rogue, name: 'Rogue' },
+                  { id: ClassChoice.Sorcerer, name: 'Sorcerer' },
+                  { id: ClassChoice.Warlock, name: 'Warlock' },
+                  { id: ClassChoice.Wizard, name: 'Wizard' },
+                ]"
+              >
+              </ChoiceSelect>
+            </div>
+          </td>
+          <td>
+            <div>
+              <SubclassChoiceSelect
+                v-model="level.value.subclass"
+                :class-choice="level.value.class"
+              ></SubclassChoiceSelect>
+            </div>
+          </td>
+          <!--
         <td class="italic">
           <div>
             {{ level.skills }}
@@ -93,10 +103,14 @@
           </div>
         </td>
 -->
+        </template>
       </tr>
     </tbody>
   </table>
-  <ActionButton @click="addClicked">+ progression</ActionButton>
+  <div class="flex gap-1">
+    <ActionButton @click="addClicked(false)">+ progression</ActionButton>
+    <ActionButton @click="addClicked(true)">+ respec</ActionButton>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -121,6 +135,7 @@ let levels = ref([
       id: 1,
       class: null,
       subclass: null,
+      respec: false,
     },
   },
 ]);
@@ -130,8 +145,10 @@ let levels = ref([
 
 //   levels.value.splice(levels.value.length - 2, 1);
 // };
-const addClicked = function () {
-  if (levels.value.length >= 12) return;
+const addClicked = function (respec: boolean) {
+  if (levels.value.filter((l) => l.value.respec === false).length >= 12) return;
+  if (respec && levels.value[levels.value.length - 1].value.respec === true)
+    return;
 
   const maxId = levels.value
     .map((l) => l.value.id)
@@ -144,6 +161,7 @@ const addClicked = function () {
         id: maxId + 1,
         class: null,
         subclass: null,
+        respec: respec,
       },
     },
   ];
