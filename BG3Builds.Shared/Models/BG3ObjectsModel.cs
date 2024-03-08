@@ -16,7 +16,7 @@ public record BG3ObjectsModel
 
     public record HeadwearModel
     {
-        public required Guid HeadwearId { get; init; }
+        public required Guid Id { get; init; }
         public required string Name { get; init; }
         public required string ImageUrl { get; init; }
         public required ArmourProficiency ArmourProficiency { get; init; }
@@ -24,35 +24,35 @@ public record BG3ObjectsModel
 
     public record CloakModel
     {
-        public required Guid CloakId { get; init; }
+        public required Guid Id { get; init; }
         public required string Name { get; init; }
         public required string ImageUrl { get; init; }
     }
 
     public record AmuletModel
     {
-        public required Guid AmuletId { get; init; }
+        public required Guid Id { get; init; }
         public required string Name { get; init; }
         public required string ImageUrl { get; init; }
     }
 
     public record ArmourModel
     {
-        public required Guid ArmourId { get; init; }
+        public required Guid Id { get; init; }
         public required string Name { get; init; }
         public required string ImageUrl { get; init; }
     }
 
     public record FeatModel
     {
-        public required Guid FeatId { get; init; }
+        public required Guid Id { get; init; }
         public required string Name { get; init; }
         public FeatExtraChoice? ExtraChoice { get; init; }
     }
 
     public record FootwearModel
     {
-        public required Guid FootwearId { get; init; }
+        public required Guid Id { get; init; }
         public required string Name { get; init; }
         public required ArmourProficiency ArmourProficiency { get; init; }
         public required string ImageUrl { get; init; }
@@ -60,7 +60,7 @@ public record BG3ObjectsModel
 
     public record HandwearModel
     {
-        public required Guid HandwearId { get; init; }
+        public required Guid Id { get; init; }
         public required string Name { get; init; }
         public required ArmourProficiency ArmourProficiency { get; init; }
         public required string ImageUrl { get; init; }
@@ -68,14 +68,14 @@ public record BG3ObjectsModel
 
     public record RingModel
     {
-        public required Guid RingId { get; init; }
+        public required Guid Id { get; init; }
         public required string Name { get; init; }
         public required string ImageUrl { get; init; }
     }
 
     public record WeaponModel
     {
-        public required Guid WeaponId { get; init; }
+        public required Guid Id { get; init; }
         public required string Name { get; init; }
         public required string ImageUrl { get; init; }
     }

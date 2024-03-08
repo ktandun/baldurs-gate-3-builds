@@ -1,3 +1,38 @@
+<template>
+  <input
+    v-model="input"
+    type="text"
+    class="text-black rounded-sm border-0 text-sm px-2 py-1 w-full"
+    @keyup.enter="enterPressed"
+    @keyup.down.stop="downPressed"
+    @keyup.up.stop="upPressed"
+    @input="showOptions = true"
+  />
+  <div class="absolute">
+    <ul
+      v-for="option in filteredOptions"
+      :key="option.id"
+      v-if="showOptions"
+      class="list-none"
+    >
+      <li
+        @click="optionSelected(option.id)"
+        class="px-2 py-1 bg-gray-300 text-slate-800 hover:bg-red-200 z-10 relative"
+        :class="{ 'bg-red-200': option.id == keyboardSelector?.id }"
+      >
+        <img
+          v-if="option.imageUrl"
+          :src="option.imageUrl"
+          width="25"
+          height="25"
+          class="inline"
+        />
+        {{ option.name }}
+      </li>
+    </ul>
+  </div>
+</template>
+
 <script lang="ts" setup>
 import { OptionModel } from "@/models/OptionModel";
 import { PropType, computed, ref } from "vue";
@@ -13,11 +48,13 @@ let showOptions = ref<boolean>(true);
 let filteredOptions = computed(() => {
   if (!props.options) return [];
 
-  const filtered = props.options.filter((o) => {
-    if (input?.value) {
-      return o.name.toLowerCase().includes(input.value.toLocaleLowerCase());
-    }
-  });
+  const filtered = props.options
+    .filter((o) => {
+      if (input?.value) {
+        return o.name.toLowerCase().includes(input.value.toLocaleLowerCase());
+      }
+    })
+    .slice(0, 10);
 
   return filtered;
 });
@@ -77,38 +114,3 @@ const downPressed = function () {
   }
 };
 </script>
-
-<template>
-  <input
-    v-model="input"
-    type="text"
-    class="px-1 text-black rounded-sm border-0"
-    @keyup.enter="enterPressed"
-    @keyup.down.stop="downPressed"
-    @keyup.up.stop="upPressed"
-    @input="showOptions = true"
-  />
-  <div class="absolute">
-    <ul
-      v-for="option in filteredOptions"
-      :key="option.id"
-      v-if="showOptions"
-      class="list-none"
-    >
-      <li
-        @click="optionSelected(option.id)"
-        class="px-2 py-1 bg-gray-300 text-slate-800 hover:bg-red-200 z-10 relative"
-        :class="{ 'bg-red-200': option.id == keyboardSelector?.id }"
-      >
-        <img
-          v-if="option.imageUrl"
-          :src="option.imageUrl"
-          width="25"
-          height="25"
-          class="inline"
-        />
-        {{ option.name }}
-      </li>
-    </ul>
-  </div>
-</template>

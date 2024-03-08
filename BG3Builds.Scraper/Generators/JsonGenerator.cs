@@ -16,34 +16,34 @@ public static class JsonGenerator
                 .OrderBy(e => e.Name)
                 .Select(e => new BG3ObjectsModel.AmuletModel
                 {
-                    AmuletId = e.AmuletId,
+                    Id = e.AmuletId,
                     Name = e.Name,
-                    ImageUrl = e.IconUrl
+                    ImageUrl = GetImageFilename(e.IconUrl)
                 })
                 .ToArray(),
             Armours = database.Armours
                 .OrderBy(e => e.Name)
                 .Select(e => new BG3ObjectsModel.ArmourModel
                 {
-                    ArmourId = e.ArmourId,
+                    Id = e.ArmourId,
                     Name = e.Name,
-                    ImageUrl = e.IconUrl
+                    ImageUrl = GetImageFilename(e.IconUrl)
                 })
                 .ToArray(),
             Cloaks = database.Cloaks
                 .OrderBy(e => e.Name)
                 .Select(e => new BG3ObjectsModel.CloakModel
                 {
-                    CloakId = e.CloakId,
+                    Id = e.CloakId,
                     Name = e.Name,
-                    ImageUrl = e.IconUrl
+                    ImageUrl = GetImageFilename(e.IconUrl)
                 })
                 .ToArray(),
             Feats = database.Feats
                 .OrderBy(e => e.Name)
                 .Select(e => new BG3ObjectsModel.FeatModel
                 {
-                    FeatId = e.FeatId,
+                    Id = e.FeatId,
                     Name = e.Name,
                     ExtraChoice = e.ExtraChoice
                 })
@@ -52,19 +52,19 @@ public static class JsonGenerator
                 .OrderBy(e => e.Name)
                 .Select(e => new BG3ObjectsModel.FootwearModel
                 {
-                    FootwearId = e.FootwearId,
+                    Id = e.FootwearId,
                     Name = e.Name,
                     ArmourProficiency = e.ArmourProficiency,
-                    ImageUrl = e.IconUrl
+                    ImageUrl = GetImageFilename(e.IconUrl)
                 })
                 .ToArray(),
             Headwears = database.Headwears
                 .OrderBy(e => e.Name)
                 .Select(h => new BG3ObjectsModel.HeadwearModel
                 {
-                    HeadwearId = h.HeadwearId,
+                    Id = h.HeadwearId,
                     Name = h.Name,
-                    ImageUrl = h.IconUrl,
+                    ImageUrl = GetImageFilename(h.IconUrl),
                     ArmourProficiency = h.ArmourProficiency,
                 })
                 .ToArray(),
@@ -72,28 +72,28 @@ public static class JsonGenerator
                 .OrderBy(e => e.Name)
                 .Select(e => new BG3ObjectsModel.HandwearModel
                 {
-                    HandwearId = e.HandwearId,
+                    Id = e.HandwearId,
                     Name = e.Name,
                     ArmourProficiency = e.ArmourProficiency,
-                    ImageUrl = e.IconUrl
+                    ImageUrl = GetImageFilename(e.IconUrl)
                 })
                 .ToArray(),
             Rings = database.Rings
                 .OrderBy(e => e.Name)
                 .Select(e => new BG3ObjectsModel.RingModel
                 {
-                    RingId = e.RingId,
+                    Id = e.RingId,
                     Name = e.Name,
-                    ImageUrl = e.IconUrl
+                    ImageUrl = GetImageFilename(e.IconUrl)
                 })
                 .ToArray(),
             Weapons = database.Weapons
                 .OrderBy(e => e.Name)
                 .Select(e => new BG3ObjectsModel.WeaponModel
                 {
-                    WeaponId = e.WeaponId,
+                    Id = e.WeaponId,
                     Name = e.Name,
-                    ImageUrl = e.IconUrl
+                    ImageUrl = GetImageFilename(e.IconUrl)
                 })
                 .ToArray(),
         };
@@ -111,5 +111,10 @@ public static class JsonGenerator
             .FullName;
 
         File.WriteAllText(Path.Join(solutionDirectory, "BG3Builds.Website", "src", "assets", "bg3objects.json"), json);
+    }
+
+    private static string GetImageFilename(string imagePath)
+    {
+        return $"/images/equipments/{Path.GetFileName(imagePath)}";
     }
 }

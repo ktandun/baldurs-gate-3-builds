@@ -10,7 +10,7 @@ const props = defineProps({
 <template>
   <select
     v-if="props.featExtraChoice === FeatExtraChoice.ElementalAdept"
-    class="px-1 text-black rounded-sm border-0"
+    class="px-2 py-1 text-black rounded-sm border-0"
     name="feat-extra-choice-select"
   >
     <option>Elemental Adept: Acid</option>

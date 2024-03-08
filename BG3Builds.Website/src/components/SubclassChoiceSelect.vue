@@ -1,3 +1,15 @@
+<template>
+  <select
+    v-model="model"
+    class="px-2 py-1 text-black rounded-sm border-0 w-full"
+    name="feat-extra-choice-select"
+  >
+    <option v-for="choice in subclassOptions" :key="choice" :value="choice">
+      {{ subclassToString(choice) }}
+    </option>
+  </select>
+</template>
+
 <script setup lang="ts">
 import { ClassChoice } from "@/enums/ClassChoice";
 import { Subclass, subclassToString } from "@/enums/Subclass";
@@ -6,7 +18,7 @@ import { PropType, ref, watchEffect } from "vue";
 const model = defineModel();
 
 const props = defineProps({
-  classChoice: Number as PropType<ClassChoice>,
+  classChoice: Number as PropType<ClassChoice | null>,
 });
 
 let subclassOptions = ref<Subclass[]>([]);
@@ -125,15 +137,3 @@ watchEffect(() => {
   }
 });
 </script>
-
-<template>
-  <select
-    v-model="model"
-    class="px-1 text-black rounded-sm border-0"
-    name="feat-extra-choice-select"
-  >
-    <option v-for="choice in subclassOptions" :key="choice" :value="choice">
-      {{ subclassToString(choice) }}
-    </option>
-  </select>
-</template>
