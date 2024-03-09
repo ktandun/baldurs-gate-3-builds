@@ -25,10 +25,10 @@
           >
             <div class="flex justify-between">
               <img
-                :src="buildItem.headwear?.imageUrl"
+                :src="buildItem.headwear?.imageUrl ?? '/images/dices/d20.png'"
                 height="30"
                 width="30"
-                class="inline mr-2"
+                class="inline mr-2 object-cover"
               />
               <Autocomplete
                 @selected="objectSelected(index, ItemType.Headwear, $event)"
@@ -47,10 +47,10 @@
           >
             <div class="flex justify-between">
               <img
-                :src="buildItem.cloak?.imageUrl"
+                :src="buildItem.cloak?.imageUrl ?? '/images/dices/d20.png'"
                 height="30"
                 width="30"
-                class="inline mr-2"
+                class="inline mr-2 object-cover"
               />
               <Autocomplete
                 @selected="objectSelected(index, ItemType.Cloak, $event)"
@@ -69,10 +69,10 @@
           >
             <div class="flex justify-between">
               <img
-                :src="buildItem.handwear?.imageUrl"
+                :src="buildItem.handwear?.imageUrl ?? '/images/dices/d20.png'"
                 height="30"
                 width="30"
-                class="inline mr-2"
+                class="inline mr-2 object-cover"
               />
               <Autocomplete
                 @selected="objectSelected(index, ItemType.Handwear, $event)"
@@ -91,10 +91,10 @@
           >
             <div class="flex justify-between">
               <img
-                :src="buildItem.armour?.imageUrl"
+                :src="buildItem.armour?.imageUrl ?? '/images/dices/d20.png'"
                 height="30"
                 width="30"
-                class="inline mr-2"
+                class="inline mr-2 object-cover"
               />
               <Autocomplete
                 @selected="objectSelected(index, ItemType.Armour, $event)"
@@ -113,10 +113,10 @@
           >
             <div class="flex justify-between">
               <img
-                :src="buildItem.footwear?.imageUrl"
+                :src="buildItem.footwear?.imageUrl ?? '/images/dices/d20.png'"
                 height="30"
                 width="30"
-                class="inline mr-2"
+                class="inline mr-2 object-cover"
               />
               <Autocomplete
                 @selected="objectSelected(index, ItemType.Footwear, $event)"
@@ -135,10 +135,10 @@
           >
             <div class="flex justify-between">
               <img
-                :src="buildItem.weaponMain?.imageUrl"
+                :src="buildItem.weaponMain?.imageUrl ?? '/images/dices/d20.png'"
                 height="30"
                 width="30"
-                class="inline mr-2"
+                class="inline mr-2 object-cover"
               />
               <Autocomplete
                 @selected="objectSelected(index, ItemType.Weapon, $event)"
@@ -157,10 +157,10 @@
           >
             <div class="flex justify-between">
               <img
-                :src="buildItem.weaponOff?.imageUrl"
+                :src="buildItem.weaponOff?.imageUrl ?? '/images/dices/d20.png'"
                 height="30"
                 width="30"
-                class="inline mr-2"
+                class="inline mr-2 object-cover"
               />
               <Autocomplete
                 @selected="objectSelected(index, ItemType.WeaponOff, $event)"
@@ -179,10 +179,12 @@
           >
             <div class="flex justify-between">
               <img
-                :src="buildItem.weaponRange?.imageUrl"
+                :src="
+                  buildItem.weaponRange?.imageUrl ?? '/images/dices/d20.png'
+                "
                 height="30"
                 width="30"
-                class="inline mr-2"
+                class="inline mr-2 object-cover"
               />
               <Autocomplete
                 @selected="objectSelected(index, ItemType.WeaponRange, $event)"
@@ -201,10 +203,12 @@
           >
             <div class="flex justify-between">
               <img
-                :src="buildItem.weaponRangeOff?.imageUrl"
+                :src="
+                  buildItem.weaponRangeOff?.imageUrl ?? '/images/dices/d20.png'
+                "
                 height="30"
                 width="30"
-                class="inline mr-2"
+                class="inline mr-2 object-cover"
               />
               <Autocomplete
                 @selected="
@@ -225,10 +229,10 @@
           >
             <div class="flex justify-between">
               <img
-                :src="buildItem.amulet?.imageUrl"
+                :src="buildItem.amulet?.imageUrl ?? '/images/dices/d20.png'"
                 height="30"
                 width="30"
-                class="inline mr-2"
+                class="inline mr-2 object-cover"
               />
               <Autocomplete
                 @selected="objectSelected(index, ItemType.Amulet, $event)"
@@ -247,10 +251,10 @@
           >
             <div class="flex justify-between">
               <img
-                :src="buildItem.ring1?.imageUrl"
+                :src="buildItem.ring1?.imageUrl ?? '/images/dices/d20.png'"
                 height="30"
                 width="30"
-                class="inline mr-2"
+                class="inline mr-2 object-cover"
               />
               <Autocomplete
                 @selected="objectSelected(index, ItemType.Ring1, $event)"
@@ -269,10 +273,10 @@
           >
             <div class="flex justify-between">
               <img
-                :src="buildItem.ring2?.imageUrl"
+                :src="buildItem.ring2?.imageUrl ?? '/images/dices/d20.png'"
                 height="30"
                 width="30"
-                class="inline mr-2"
+                class="inline mr-2 object-cover"
               />
               <Autocomplete
                 @selected="objectSelected(index, ItemType.Ring2, $event)"
