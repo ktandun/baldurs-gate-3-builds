@@ -23,7 +23,15 @@ let abilityPointsCrossProduct = uniqBy(
     .map((i) => i.sort())
     .sort(),
   (i) => `${i[0]},${i[1]}`
-).map((i) => abilityPointToString(i[0]) + " + " + abilityPointToString(i[1]));
+).map((i) => {
+  const [left, right] = i;
+
+  if (left === right) {
+    return `2 x ${abilityPointToString(left)}`;
+  }
+
+  return abilityPointToString(left) + " + " + abilityPointToString(right);
+});
 </script>
 
 <template>
