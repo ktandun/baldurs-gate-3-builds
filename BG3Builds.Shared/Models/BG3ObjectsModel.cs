@@ -1,4 +1,5 @@
 using BG3Builds.Shared.Enums;
+using BG3Builds.Shared.Interfaces;
 
 namespace BG3Builds.Shared.Models;
 
@@ -13,6 +14,7 @@ public record BG3ObjectsModel
     public required HeadwearModel[] Headwears { get; init; }
     public required RingModel[] Rings { get; init; }
     public required WeaponModel[] Weapons { get; init; }
+    public required SpellModel[] Spells { get; set; }
 
     public record HeadwearModel
     {
@@ -43,10 +45,11 @@ public record BG3ObjectsModel
         public required string ImageUrl { get; init; }
     }
 
-    public record FeatModel
+    public record FeatModel : IOptionModel
     {
-        public required Guid Id { get; init; }
+        public required int Id { get; init; }
         public required string Name { get; init; }
+        public required string ImageUrl { get; init; }
         public FeatExtraChoice? ExtraChoice { get; init; }
     }
 
@@ -76,6 +79,13 @@ public record BG3ObjectsModel
     public record WeaponModel
     {
         public required Guid Id { get; init; }
+        public required string Name { get; init; }
+        public required string ImageUrl { get; init; }
+    }
+
+    public record SpellModel
+    {
+        public required int Id { get; init; }
         public required string Name { get; init; }
         public required string ImageUrl { get; init; }
     }

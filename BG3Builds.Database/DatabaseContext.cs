@@ -22,6 +22,7 @@ public class DatabaseContext(string connectionString) : DbContext
     public DbSet<HeadwearEntity> Headwears { get; set; } = null!;
     public DbSet<RingEntity> Rings { get; set; } = null!;
     public DbSet<WeaponEntity> Weapons { get; set; } = null!;
+    public DbSet<SpellEntity> Spells { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

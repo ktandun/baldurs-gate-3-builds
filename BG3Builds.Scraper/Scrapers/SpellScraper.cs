@@ -7,87 +7,73 @@ using HtmlAgilityPack;
 
 namespace BG3Builds.Scraper.Scrapers;
 
-public static partial class FeatScraper
+public static partial class SpellScraper
 {
     private static readonly Regex Whitespace = WhitespaceRegex();
+
     public static void Scrape(string connectionString, string htmlFile)
     {
         var web = new HtmlDocument();
         web.Load(htmlFile);
 
-        var featNodes = new List<HtmlNode>
+        var cantripNodes = new List<HtmlNode>
         {
-            web.DocumentNode.QuerySelector("h2 span#List_of_all_feats").ParentNode.NextSibling.NextSibling
+            web.DocumentNode.QuerySelector("h4 span#Cantrips").ParentNode.NextSibling.NextSibling.NextSibling.NextSibling.NextSibling
         };
 
-        var featEntities = featNodes
-            .SelectMany(node => Scrape(node.QuerySelectorAll("table.wikitable tr")))
-            .Where(featEntity => !string.IsNullOrWhiteSpace(featEntity.Name))
+        var cantripEntities = cantripNodes
+            .SelectMany(node => Scrape(node.QuerySelectorAll("li"), SpellType.Cantrip))
+            .Where(spellEntity => !string.IsNullOrWhiteSpace(spellEntity.Name))
+            .OrderBy(spellEntity => spellEntity.Name)
+            .ToList();
+
+        var spellNodes = new List<HtmlNode>
+        {
+            web.DocumentNode.SelectSingleNode("/html/body/div[3]/div[3]/div[5]/div[1]/div[4]"),
+            web.DocumentNode.SelectSingleNode("/html/body/div[3]/div[3]/div[5]/div[1]/div[5]"),
+            web.DocumentNode.SelectSingleNode("/html/body/div[3]/div[3]/div[5]/div[1]/div[6]"),
+            web.DocumentNode.SelectSingleNode("/html/body/div[3]/div[3]/div[5]/div[1]/div[7]"),
+            web.DocumentNode.SelectSingleNode("/html/body/div[3]/div[3]/div[5]/div[1]/div[8]"),
+            web.DocumentNode.SelectSingleNode("/html/body/div[3]/div[3]/div[5]/div[1]/div[9]"),
+            web.DocumentNode.SelectSingleNode("/html/body/div[3]/div[3]/div[5]/div[1]/div[10]"),
+        };
+
+        var spellEntities = spellNodes
+            .SelectMany(node => Scrape(node.QuerySelectorAll("li"), SpellType.Spell))
+            .Where(spellEntity => !string.IsNullOrWhiteSpace(spellEntity.Name))
+            .OrderBy(spellEntity => spellEntity.Name)
             .ToList();
 
         using var database = new DatabaseContext(connectionString);
 
-        database.AddRange(featEntities);
+        database.AddRange(cantripEntities);
+        database.AddRange(spellEntities);
 
         database.SaveChanges();
     }
 
-    private enum Columns
+    private static IEnumerable<SpellEntity> Scrape(IList<HtmlNode> spellRows, SpellType spellType)
     {
-        FeatName = 1,
-    }
-
-    private static IEnumerable<FeatEntity> Scrape(IList<HtmlNode> featRows)
-    {
-        foreach (var featRow in featRows)
+        foreach (var spellRow in spellRows)
         {
-            // feat name, armour class, stealth disadvantage, weight, price, special
-            var columnNumber = 1;
-            var featName = string.Empty;
-            var featWikiUrl = string.Empty;
-            var featIconUrl = string.Empty;
+            var spell = spellRow.QuerySelector("span a");
 
-            foreach (var column in featRow.QuerySelectorAll("th[scope='rowgroup']"))
+            var spellName = HttpUtility.HtmlDecode(
+                Whitespace.Replace(
+                    spell.Attributes.First(a => a.Name == "title").Value ?? string.Empty, "").Trim());
+
+            var spellWikiUrl = HttpUtility.HtmlDecode(
+                spell.Attributes.First(a => a.Name == "href").Value);
+
+            var spellIconUrl = HttpUtility.HtmlDecode(
+                spell.QuerySelector("img").Attributes.First(a => a.Name == "src").Value);
+
+            yield return new SpellEntity
             {
-                switch (columnNumber)
-                {
-                    case (int)Columns.FeatName:
-                        featName = Whitespace.Replace(column.InnerText, "").Trim();
-                        break;
-                }
-
-                columnNumber++;
-            }
-
-            featName = HttpUtility.HtmlDecode(featName);
-
-            yield return new FeatEntity
-            {
-                FeatId = Guid.NewGuid(),
-                Name = featName,
-                WikiUrl = featWikiUrl,
-                IconUrl = featIconUrl,
-                ExtraChoice = featName switch
-                {
-                    "Ability Improvement" => FeatExtraChoice.TwoAbilityScores,
-                    "Athlete" => FeatExtraChoice.StrengthOrDexterity,
-                    "Elemental Adept" => FeatExtraChoice.ElementalAdept,
-                    "Lightly Armoured" => FeatExtraChoice.StrengthOrDexterity,
-                    "Magic Initiate: Bard" => FeatExtraChoice.TwoCantripsAndBardSpell,
-                    "Magic Initiate: Cleric" => FeatExtraChoice.TwoCantripsAndClericSpell,
-                    "Magic Initiate: Druid" => FeatExtraChoice.TwoCantripsAndDruidSpell,
-                    "Magic Initiate: Sorcerer" => FeatExtraChoice.TwoCantripsAndSorcererSpell,
-                    "Magic Initiate: Warlock" => FeatExtraChoice.TwoCantripsAndWarlockSpell,
-                    "Magic Initiate: Wizard" => FeatExtraChoice.TwoCantripsAndWizardSpell,
-                    "Martial Adept" => FeatExtraChoice.TwoBattleMasterManoeuvres,
-                    "Moderately Armoured" => FeatExtraChoice.StrengthOrDexterity,
-                    "Resilient" => FeatExtraChoice.OneAbilityScore,
-                    "Ritual Caster" => FeatExtraChoice.TwoRitualSpells,
-                    "Spell Sniper" => FeatExtraChoice.AttackRollCantrip,
-                    "Tavern Brawler" => FeatExtraChoice.StrengthOrConstitution,
-                    "Weapon Master" => FeatExtraChoice.StrengthOrDexterity,
-                    _ => FeatExtraChoice.None,
-                }
+                Name = spellName,
+                SpellType = spellType,
+                WikiUrl = spellWikiUrl,
+                IconUrl = spellIconUrl,
             };
         }
     }

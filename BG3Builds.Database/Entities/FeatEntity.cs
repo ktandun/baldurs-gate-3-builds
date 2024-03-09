@@ -7,7 +7,7 @@ namespace BG3Builds.Database.Entities;
 
 public class FeatEntity : IHasIconUrl
 {
-    public required Guid FeatId { get; set; }
+    public int FeatId { get; set; }
     public required string Name { get; set; }
     public required FeatExtraChoice ExtraChoice { get; set; }
     public required string WikiUrl { get; set; }
@@ -19,6 +19,7 @@ public class FeatEntity : IHasIconUrl
         {
             builder.ToTable("feats");
             builder.HasKey(c => c.FeatId);
+            builder.Property(c => c.FeatId).ValueGeneratedOnAdd();
             builder.Property(c => c.Name).HasMaxLength(100).IsRequired();
             builder.Property(c => c.WikiUrl).HasMaxLength(200).IsRequired();
             builder.Property(c => c.IconUrl).HasMaxLength(200).IsRequired();

@@ -11,7 +11,6 @@ public class RingEntity : IHasIconUrl
     public required string Name { get; set; }
     public required string WikiUrl { get; set; }
     public required string IconUrl { get; set; }
-    public Guid ImageId { get; set; }
 
     public class RingEntityConfiguration : IEntityTypeConfiguration<RingEntity>
     {

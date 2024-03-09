@@ -1,5 +1,6 @@
 using System.Text.Json;
 using BG3Builds.Database;
+using BG3Builds.Shared.Enums;
 using BG3Builds.Shared.Models;
 
 namespace BG3Builds.Scraper.Generators;
@@ -18,7 +19,7 @@ public static class JsonGenerator
                 {
                     Id = e.AmuletId,
                     Name = e.Name,
-                    ImageUrl = GetImageFilename(e.IconUrl)
+                    ImageUrl = GetImageFilename(e.IconUrl, ImageDirectory.Equipments)
                 })
                 .ToArray(),
             Armours = database.Armours
@@ -27,7 +28,7 @@ public static class JsonGenerator
                 {
                     Id = e.ArmourId,
                     Name = e.Name,
-                    ImageUrl = GetImageFilename(e.IconUrl)
+                    ImageUrl = GetImageFilename(e.IconUrl, ImageDirectory.Equipments)
                 })
                 .ToArray(),
             Cloaks = database.Cloaks
@@ -36,7 +37,7 @@ public static class JsonGenerator
                 {
                     Id = e.CloakId,
                     Name = e.Name,
-                    ImageUrl = GetImageFilename(e.IconUrl)
+                    ImageUrl = GetImageFilename(e.IconUrl, ImageDirectory.Equipments)
                 })
                 .ToArray(),
             Feats = database.Feats
@@ -45,8 +46,17 @@ public static class JsonGenerator
                 {
                     Id = e.FeatId,
                     Name = e.Name,
+                    ImageUrl = string.Empty,
                     ExtraChoice = e.ExtraChoice
                 })
+                .ToArray()
+                .Prepend(
+                    new BG3ObjectsModel.FeatModel
+                    {
+                        Id = 42,
+                        Name = "None",
+                        ImageUrl = string.Empty
+                    })
                 .ToArray(),
             Footwears = database.Footwears
                 .OrderBy(e => e.Name)
@@ -55,7 +65,7 @@ public static class JsonGenerator
                     Id = e.FootwearId,
                     Name = e.Name,
                     ArmourProficiency = e.ArmourProficiency,
-                    ImageUrl = GetImageFilename(e.IconUrl)
+                    ImageUrl = GetImageFilename(e.IconUrl, ImageDirectory.Equipments)
                 })
                 .ToArray(),
             Headwears = database.Headwears
@@ -64,7 +74,7 @@ public static class JsonGenerator
                 {
                     Id = h.HeadwearId,
                     Name = h.Name,
-                    ImageUrl = GetImageFilename(h.IconUrl),
+                    ImageUrl = GetImageFilename(h.IconUrl, ImageDirectory.Equipments),
                     ArmourProficiency = h.ArmourProficiency,
                 })
                 .ToArray(),
@@ -75,7 +85,7 @@ public static class JsonGenerator
                     Id = e.HandwearId,
                     Name = e.Name,
                     ArmourProficiency = e.ArmourProficiency,
-                    ImageUrl = GetImageFilename(e.IconUrl)
+                    ImageUrl = GetImageFilename(e.IconUrl, ImageDirectory.Equipments)
                 })
                 .ToArray(),
             Rings = database.Rings
@@ -84,7 +94,7 @@ public static class JsonGenerator
                 {
                     Id = e.RingId,
                     Name = e.Name,
-                    ImageUrl = GetImageFilename(e.IconUrl)
+                    ImageUrl = GetImageFilename(e.IconUrl, ImageDirectory.Equipments)
                 })
                 .ToArray(),
             Weapons = database.Weapons
@@ -93,7 +103,16 @@ public static class JsonGenerator
                 {
                     Id = e.WeaponId,
                     Name = e.Name,
-                    ImageUrl = GetImageFilename(e.IconUrl)
+                    ImageUrl = GetImageFilename(e.IconUrl, ImageDirectory.Equipments)
+                })
+                .ToArray(),
+            Spells = database.Spells
+                .OrderBy(e => e.Name)
+                .Select(e => new BG3ObjectsModel.SpellModel
+                {
+                    Id = e.SpellId,
+                    Name = e.Name,
+                    ImageUrl = GetImageFilename(e.IconUrl, ImageDirectory.Spells)
                 })
                 .ToArray(),
         };
@@ -113,8 +132,10 @@ public static class JsonGenerator
         File.WriteAllText(Path.Join(solutionDirectory, "BG3Builds.Website", "src", "assets", "bg3objects.json"), json);
     }
 
-    private static string GetImageFilename(string imagePath)
+    private static string GetImageFilename(string imagePath, ImageDirectory imageDirectory)
     {
-        return $"/images/equipments/{Path.GetFileName(imagePath)}";
+        var imageFolder = ImageDirectoryHelper.GetImageDirectoryName(imageDirectory);
+
+        return $"/images/{imageFolder}/{Path.GetFileName(imagePath)}";
     }
 }

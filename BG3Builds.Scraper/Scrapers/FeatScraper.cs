@@ -63,7 +63,6 @@ public static partial class FeatScraper
 
             yield return new FeatEntity
             {
-                FeatId = Guid.NewGuid(),
                 Name = featName,
                 WikiUrl = featWikiUrl,
                 IconUrl = featIconUrl,

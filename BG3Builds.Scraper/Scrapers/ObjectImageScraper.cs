@@ -1,6 +1,7 @@
 using System.Web;
 using BG3Builds.Database;
 using BG3Builds.Shared.Constants;
+using BG3Builds.Shared.Enums;
 using BG3Builds.Shared.Interfaces;
 
 namespace BG3Builds.Scraper.Scrapers;
@@ -11,17 +12,18 @@ public static class ObjectImageScraper
     {
         await using var database = new DatabaseContext(connectionString);
 
-        await DownloadIconUrlsAsync(database.Amulets);
-        await DownloadIconUrlsAsync(database.Armours);
-        await DownloadIconUrlsAsync(database.Cloaks);
-        await DownloadIconUrlsAsync(database.Footwears);
-        await DownloadIconUrlsAsync(database.Handwears);
-        await DownloadIconUrlsAsync(database.Headwears);
-        await DownloadIconUrlsAsync(database.Rings);
-        await DownloadIconUrlsAsync(database.Weapons);
+        await DownloadIconUrlsAsync(database.Amulets, ImageDirectory.Equipments);
+        await DownloadIconUrlsAsync(database.Armours, ImageDirectory.Equipments);
+        await DownloadIconUrlsAsync(database.Cloaks, ImageDirectory.Equipments);
+        await DownloadIconUrlsAsync(database.Footwears, ImageDirectory.Equipments);
+        await DownloadIconUrlsAsync(database.Handwears, ImageDirectory.Equipments);
+        await DownloadIconUrlsAsync(database.Headwears, ImageDirectory.Equipments);
+        await DownloadIconUrlsAsync(database.Rings, ImageDirectory.Equipments);
+        await DownloadIconUrlsAsync(database.Weapons, ImageDirectory.Equipments);
+        await DownloadIconUrlsAsync(database.Spells, ImageDirectory.Spells);
     }
 
-    private static async Task DownloadIconUrlsAsync<TEntity>(IQueryable<TEntity> entities)
+    private static async Task DownloadIconUrlsAsync<TEntity>(IQueryable<TEntity> entities, ImageDirectory imageDirectory)
         where TEntity : IHasIconUrl
     {
         var iconUrls = entities
@@ -39,7 +41,12 @@ public static class ObjectImageScraper
         foreach (var iconUrl in iconUrls)
         {
             var uri = Bg3WikiConstants.WikiBaseUrl + iconUrl;
-            var imagePath = Path.Join(projectDirectory, "BG3Builds.Website", "public", "images", "equipments", HttpUtility.UrlDecode(Path.GetFileName(uri)));
+            var imageFolder = ImageDirectoryHelper.GetImageDirectoryName(imageDirectory);
+            var folderFullPath = Path.Join(projectDirectory, "BG3Builds.Website", "public", "images", imageFolder);
+
+            Directory.CreateDirectory(folderFullPath);
+
+            var imagePath = Path.Join(folderFullPath, HttpUtility.UrlDecode(Path.GetFileName(uri)));
 
             if (Path.Exists(imagePath)) continue;
 
