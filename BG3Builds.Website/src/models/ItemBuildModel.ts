@@ -1,18 +1,18 @@
-import { OptionModel } from "./OptionModel";
+import { IOptionModel } from "./OptionModel";
 
 export interface ItemBuildModel {
   id: number;
   name: string;
-  headwear: OptionModel | null;
-  cloak: OptionModel | null;
-  handwear: OptionModel | null;
-  armour: OptionModel | null;
-  footwear: OptionModel | null;
-  weaponMain: OptionModel | null;
-  weaponOff: OptionModel | null;
-  weaponRange: OptionModel | null;
-  weaponRangeOff: OptionModel | null;
-  amulet: OptionModel | null;
-  ring1: OptionModel | null;
-  ring2: OptionModel | null;
+  headwear: IOptionModel | null;
+  cloak: IOptionModel | null;
+  handwear: IOptionModel | null;
+  armour: IOptionModel | null;
+  footwear: IOptionModel | null;
+  weaponMain: IOptionModel | null;
+  weaponOff: IOptionModel | null;
+  weaponRange: IOptionModel | null;
+  weaponRangeOff: IOptionModel | null;
+  amulet: IOptionModel | null;
+  ring1: IOptionModel | null;
+  ring2: IOptionModel | null;
 }

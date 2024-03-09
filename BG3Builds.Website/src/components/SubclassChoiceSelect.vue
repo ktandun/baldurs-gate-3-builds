@@ -1,7 +1,7 @@
 <template>
   <select
     v-model="model"
-    class="px-2 py-1 text-black rounded-sm border-0 w-full"
+    class="bg-gray-200 px-3 py-2 text-black rounded-sm border-0 w-full"
     name="feat-extra-choice-select"
   >
     <option v-for="choice in subclassOptions" :key="choice" :value="choice">

@@ -31,10 +31,10 @@
     <table class="table-auto">
       <thead class="text-primary font-semibold text-left">
         <th class="min-w-[60px]">Level</th>
-        <th class="min-w-[180px]">Class</th>
-        <th class="min-w-[200px]">Subclass</th>
-        <th class="min-w-[200px]">Key Skills</th>
-        <th class="min-w-[200px]">Feat</th>
+        <th class="min-w-[120px]">Class</th>
+        <th class="min-w-[180px]">Subclass</th>
+        <th class="max-w-[300px] min-w-[200px]">Key Skills</th>
+        <th class="min-w-[100px]">Feat</th>
         <th class="min-w-[200px]">Feat Extra Choices</th>
       </thead>
       <tbody>
@@ -78,29 +78,22 @@
                 ></SubclassChoiceSelect>
               </div>
             </td>
+            <td>
+              <MultiselectAutocomplete
+                v-model="level.value.skills"
+                :options="bg3objects.spells"
+              ></MultiselectAutocomplete>
+            </td>
+            <td class="italic">
+              <div>
+                <ChoiceSelect
+                  v-model="level.value.feat"
+                  :options="bg3objects.feats"
+                >
+                </ChoiceSelect>
+              </div>
+            </td>
             <!--
-        <td class="italic">
-          <div>
-            {{ level.skills }}
-          </div>
-        </td>
-        <td class="italic">
-          <div>
-            <select
-              v-model="level.feat"
-              name="feat-select"
-              class="px-2 py-1 text-black rounded-sm border-0"
-            >
-              <option
-                v-for="feat in bg3objects.feats"
-                :key="feat.featId"
-                :value="feat.featId"
-              >
-                {{ feat.name }}
-              </option>
-            </select>
-          </div>
-        </td>
         <td class="italic">
           <div>
             <FeatExtraChoiceSelect
@@ -135,24 +128,28 @@ import {
   getClassImageUrl,
   getClassName,
 } from "@/enums/ClassChoice";
-import ChoiceSelect from "./ChoiceSelect.vue";
+import ChoiceSelect from "@components/BuildingBlocks/ChoiceSelect.vue";
 import SubclassChoiceSelect from "@/components/SubclassChoiceSelect.vue";
 // import FeatExtraChoiceSelect from "@/components/FeatExtraChoiceSelect.vue";
-// import bg3objects from "@/assets/bg3objects.json";
+import bg3objects from "@/assets/bg3objects.json";
 // import { FeatExtraChoice } from "@/enums/FeatExtraChoice";
 import { computed, ref } from "vue";
 import ActionButton from "./BuildingBlocks/ActionButton.vue";
 import { cloneDeep } from "lodash";
+import MultiselectAutocomplete from "@components/BuildingBlocks/MultiselectAutocomplete.vue";
+import { ILevelBuildModel } from "@/models/LevelBuildModel";
 
 const emits = defineEmits(["duplicate", "remove"]);
 
-let levels = ref([
+let levels = ref<{ value: ILevelBuildModel }[]>([
   {
     value: {
       id: 1,
       class: null,
       subclass: null,
       charLevel: 1,
+      feat: null,
+      skills: [],
       respec: false,
     },
   },
@@ -210,6 +207,8 @@ const addClicked = (respec: boolean) => {
           charLevel: -1,
           class: lastClass,
           subclass: lastSubclass,
+          feat: null,
+          skills: [],
           respec: true,
         },
       },
@@ -220,6 +219,8 @@ const addClicked = (respec: boolean) => {
           charLevel: -1,
           class: null,
           subclass: null,
+          feat: null,
+          skills: [],
           respec: false,
         },
       },
@@ -233,6 +234,8 @@ const addClicked = (respec: boolean) => {
           charLevel: -1,
           class: lastClass,
           subclass: lastSubclass,
+          feat: null,
+          skills: [],
           respec: false,
         },
       },

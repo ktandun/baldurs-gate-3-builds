@@ -301,11 +301,11 @@
 
 <script setup lang="ts">
 import ActionButton from "./BuildingBlocks/ActionButton.vue";
-import Autocomplete from "@components/Autocomplete.vue";
+import Autocomplete from "@components/BuildingBlocks/Autocomplete.vue";
 import TextInput from "./BuildingBlocks/TextInput.vue";
 import bg3objects from "@/assets/bg3objects.json";
 import { ItemBuildModel } from "@/models/ItemBuildModel";
-import { OptionModel } from "@/models/OptionModel";
+import { IOptionModel } from "@/models/OptionModel";
 import { ref } from "vue";
 
 enum ItemType {
@@ -358,8 +358,8 @@ let buildItems = ref<ItemBuildModel[]>([
   },
 ]);
 
-const getDataSource = (itemType: ItemType): OptionModel[] => {
-  let source: OptionModel[] = [];
+const getDataSource = (itemType: ItemType): IOptionModel[] => {
+  let source: IOptionModel[] = [];
 
   switch (itemType) {
     case ItemType.Headwear:
