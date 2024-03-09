@@ -30,12 +30,13 @@
     </div>
     <table class="table-auto">
       <thead class="text-primary font-semibold text-left">
-        <th class="min-w-[60px]">Level</th>
-        <th class="min-w-[120px]">Class</th>
-        <th class="min-w-[180px]">Subclass</th>
+        <th class="min-w-[30px]">Level</th>
+        <th class="">Class</th>
+        <th class="">Subclass</th>
         <th class="max-w-[300px] min-w-[200px]">Key Skills</th>
-        <th class="min-w-[100px]">Feat</th>
-        <th class="min-w-[200px]">Feat Extra Choices</th>
+        <th class="">Feat</th>
+        <th class="">Feat Extra Choices</th>
+        <th></th>
       </thead>
       <tbody>
         <tr v-for="(level, index) in levels" :key="level.value.id">
@@ -84,7 +85,7 @@
                 :options="bg3objects.spells"
               ></MultiselectAutocomplete>
             </td>
-            <td class="italic">
+            <td>
               <div>
                 <ChoiceSelect
                   v-model="level.value.feat"
@@ -93,23 +94,15 @@
                 </ChoiceSelect>
               </div>
             </td>
-            <!--
-        <td class="italic">
-          <div>
-            <FeatExtraChoiceSelect
-              :feat-extra-choice="FeatExtraChoice.ElementalAdept"
-            >
-            </FeatExtraChoiceSelect>
-          </div>
-        </td>
+            <td>
+              <FeatExtraChoiceSelect
+                :feat-extra-choice="FeatExtraChoice.TwoAbilityScores"
+              >
+              </FeatExtraChoiceSelect>
+            </td>
 
--->
-            <td class="italic">
-              <div class="flex gap-2">
-                <ActionButton @click="removeClicked(index)"
-                  >remove</ActionButton
-                >
-              </div>
+            <td>
+              <ActionButton @click="removeClicked(index)">remove</ActionButton>
             </td>
           </template>
         </tr>
@@ -130,9 +123,9 @@ import {
 } from "@/enums/ClassChoice";
 import ChoiceSelect from "@components/BuildingBlocks/ChoiceSelect.vue";
 import SubclassChoiceSelect from "@/components/SubclassChoiceSelect.vue";
-// import FeatExtraChoiceSelect from "@/components/FeatExtraChoiceSelect.vue";
+import FeatExtraChoiceSelect from "@/components/FeatExtraChoiceSelect.vue";
 import bg3objects from "@/assets/bg3objects.json";
-// import { FeatExtraChoice } from "@/enums/FeatExtraChoice";
+import { FeatExtraChoice } from "@/enums/FeatExtraChoice";
 import { computed, ref } from "vue";
 import ActionButton from "./BuildingBlocks/ActionButton.vue";
 import { cloneDeep } from "lodash";

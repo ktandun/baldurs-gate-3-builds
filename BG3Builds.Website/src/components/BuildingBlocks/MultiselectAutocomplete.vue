@@ -23,7 +23,7 @@
     <input
       v-model="searchText"
       type="text"
-      class="text-black rounded-sm border-0 bg-transparent text-sm px-2 py-1 relative"
+      class="text-black rounded-sm border-0 bg-transparent text-sm px-2 py-1 relative inline-flex"
       placeholder="type to search..."
       @keyup.enter="enterPressed"
       @keyup.down.stop="downPressed"

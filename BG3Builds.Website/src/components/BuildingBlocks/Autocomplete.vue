@@ -3,7 +3,7 @@
     <input
       v-model="input"
       type="text"
-      class="text-black rounded-sm border-0 text-sm px-2 py-1 w-full inline-block"
+      class="text-black rounded-sm border-0 text-md px-3 py-2 w-full inline-block"
       placeholder="type to search..."
       @keyup.enter="enterPressed"
       @keyup.down.stop="downPressed"
