@@ -55,8 +55,8 @@
 </template>
 
 <script lang="ts" setup>
-import { IOptionModel } from "@/models/OptionModel";
 import { PropType, computed, ref } from "vue";
+import { IOptionModel } from "@/models/OptionModel";
 
 const props = defineProps({
   options: Array as PropType<IOptionModel[]>,
@@ -108,9 +108,9 @@ const upPressed = function () {
         filteredOptions.value[
           Math.max(
             filteredOptions.value.findIndex(
-              (o) => o.id === keyboardSelector.value!.id
+              (o) => o.id === keyboardSelector.value!.id,
             ) - 1,
-            0
+            0,
           )
         ];
     }
@@ -126,9 +126,9 @@ const downPressed = function () {
         filteredOptions.value[
           Math.min(
             filteredOptions.value.findIndex(
-              (o) => o.id === keyboardSelector.value!.id
+              (o) => o.id === keyboardSelector.value!.id,
             ) + 1,
-            filteredOptions.value.length - 1
+            filteredOptions.value.length - 1,
           )
         ];
     }

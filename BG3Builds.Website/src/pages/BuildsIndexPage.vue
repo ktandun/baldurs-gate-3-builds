@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import LevelBuild from "@components/LevelBuild.vue";
-import ItemBuild from "@components/ItemBuild.vue";
 import { ref } from "vue";
+import ItemBuild from "@components/ItemBuild.vue";
+import LevelBuild from "@components/LevelBuild.vue";
 
 let name = ref<string>("Stealth Gloomstalker");
 </script>

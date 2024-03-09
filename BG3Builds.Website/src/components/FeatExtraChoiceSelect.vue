@@ -1,9 +1,12 @@
 <script setup lang="ts">
-import { FeatExtraChoice } from "@/enums/FeatExtraChoice.ts";
-import { PropType } from "vue";
-import { crossProduct } from "@/utilities/ArrayUtilities";
-import { AbilityPoint, abilityPointToString } from "@/enums/AbilityPoint";
 import { uniqBy } from "lodash";
+import { PropType } from "vue";
+import { AbilityPoint, abilityPointToString } from "@/enums/AbilityPoint";
+import { FeatExtraChoice } from "@/enums/FeatExtraChoice.ts";
+import { useBg3ObjectsStore } from "@/stores/Bg3ObjectsStore";
+import { crossProduct } from "@/utilities/ArrayUtilities";
+
+const bg3ObjectsStore = useBg3ObjectsStore();
 
 const props = defineProps({
   featExtraChoice: Number as PropType<FeatExtraChoice>,
@@ -18,11 +21,11 @@ const abilityPoints = [
   AbilityPoint.Charisma,
 ];
 
-let abilityPointsCrossProduct = uniqBy(
+const abilityPointsCrossProduct = uniqBy(
   crossProduct(abilityPoints, abilityPoints)
     .map((i) => i.sort())
     .sort(),
-  (i) => `${i[0]},${i[1]}`
+  (i) => `${i[0]},${i[1]}`,
 ).map((i) => {
   const [left, right] = i;
 
@@ -35,10 +38,7 @@ let abilityPointsCrossProduct = uniqBy(
 </script>
 
 <template>
-  <select
-    class="px-3 py-2 text-black rounded-sm border-0"
-    name="feat-extra-choice-select"
-  >
+  <select class="px-3 py-2 text-black rounded-sm border-0">
     <template
       v-if="props.featExtraChoice === FeatExtraChoice.StrengthOrDexterity"
     >
@@ -93,9 +93,15 @@ let abilityPointsCrossProduct = uniqBy(
     <template
       v-if="props.featExtraChoice === FeatExtraChoice.TwoBattleMasterManoeuvres"
     ></template>
-    <template
-      v-if="props.featExtraChoice === FeatExtraChoice.TwoRitualSpells"
-    ></template>
+    <template v-if="props.featExtraChoice === FeatExtraChoice.TwoRitualSpells">
+      <option
+        v-for="o in bg3ObjectsStore.ritualSpells"
+        :key="o.id"
+        :value="o.id"
+      >
+        {{ o.name }}
+      </option>
+    </template>
     <template
       v-if="props.featExtraChoice === FeatExtraChoice.AttackRollCantrip"
     ></template>

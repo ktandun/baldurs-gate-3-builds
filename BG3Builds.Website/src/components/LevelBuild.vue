@@ -96,7 +96,7 @@
             </td>
             <td>
               <FeatExtraChoiceSelect
-                :feat-extra-choice="FeatExtraChoice.TwoAbilityScores"
+                :feat-extra-choice="FeatExtraChoice.TwoRitualSpells"
               >
               </FeatExtraChoiceSelect>
             </td>
@@ -116,21 +116,21 @@
 </template>
 
 <script setup lang="ts">
+import { cloneDeep } from "lodash";
+import { computed, ref } from "vue";
+import ChoiceSelect from "@components/BuildingBlocks/ChoiceSelect.vue";
+import MultiselectAutocomplete from "@components/BuildingBlocks/MultiselectAutocomplete.vue";
+import bg3objects from "@/assets/bg3objects.json";
+import FeatExtraChoiceSelect from "@/components/FeatExtraChoiceSelect.vue";
+import SubclassChoiceSelect from "@/components/SubclassChoiceSelect.vue";
 import {
   ClassChoice,
   getClassImageUrl,
   getClassName,
 } from "@/enums/ClassChoice";
-import ChoiceSelect from "@components/BuildingBlocks/ChoiceSelect.vue";
-import SubclassChoiceSelect from "@/components/SubclassChoiceSelect.vue";
-import FeatExtraChoiceSelect from "@/components/FeatExtraChoiceSelect.vue";
-import bg3objects from "@/assets/bg3objects.json";
 import { FeatExtraChoice } from "@/enums/FeatExtraChoice";
-import { computed, ref } from "vue";
-import ActionButton from "./BuildingBlocks/ActionButton.vue";
-import { cloneDeep } from "lodash";
-import MultiselectAutocomplete from "@components/BuildingBlocks/MultiselectAutocomplete.vue";
 import { ILevelBuildModel } from "@/models/LevelBuildModel";
+import ActionButton from "./BuildingBlocks/ActionButton.vue";
 
 const emits = defineEmits(["duplicate", "remove"]);
 
@@ -170,7 +170,7 @@ const removeDuplicateRespecs = () => {
 const addClicked = (respec: boolean) => {
   const maxLevel = 12;
   const lastRespecIndex = levels.value.findLastIndex(
-    (l) => l.value.respec === true
+    (l) => l.value.respec === true,
   );
 
   const levelBuildsAfterLastRespec =
@@ -273,7 +273,7 @@ const levelBuildSummary = computed(() => {
       levelProgression = [];
     } else if (l.value.class) {
       const existingIndex = levelProgression.findIndex(
-        (r) => r.class === l.value.class
+        (r) => r.class === l.value.class,
       );
 
       if (existingIndex !== -1) {

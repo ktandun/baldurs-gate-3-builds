@@ -11,9 +11,9 @@
 </template>
 
 <script setup lang="ts">
+import { PropType, ref, watchEffect } from "vue";
 import { ClassChoice } from "@/enums/ClassChoice";
 import { Subclass, subclassToString } from "@/enums/Subclass";
-import { PropType, ref, watchEffect } from "vue";
 
 const model = defineModel();
 

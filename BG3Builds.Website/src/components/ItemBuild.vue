@@ -304,13 +304,13 @@
 </template>
 
 <script setup lang="ts">
-import ActionButton from "./BuildingBlocks/ActionButton.vue";
+import { ref } from "vue";
 import Autocomplete from "@components/BuildingBlocks/Autocomplete.vue";
-import TextInput from "./BuildingBlocks/TextInput.vue";
 import bg3objects from "@/assets/bg3objects.json";
 import { ItemBuildModel } from "@/models/ItemBuildModel";
 import { IOptionModel } from "@/models/OptionModel";
-import { ref } from "vue";
+import ActionButton from "./BuildingBlocks/ActionButton.vue";
+import TextInput from "./BuildingBlocks/TextInput.vue";
 
 enum ItemType {
   Headwear,
@@ -409,7 +409,7 @@ const getDataSource = (itemType: ItemType): IOptionModel[] => {
 const objectSelected = (
   index: number,
   itemType: ItemType,
-  id: string | number
+  id: string | number,
 ): void => {
   const notFound = -1;
   const source = getDataSource(itemType);

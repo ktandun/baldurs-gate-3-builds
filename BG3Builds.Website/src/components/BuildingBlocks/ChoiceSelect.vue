@@ -11,8 +11,8 @@
 </template>
 
 <script lang="ts" setup>
-import { IOptionModel } from "@/models/OptionModel";
 import { PropType, computed } from "vue";
+import { IOptionModel } from "@/models/OptionModel";
 
 const props = defineProps({ options: Array as PropType<IOptionModel[]> });
 const emits = defineEmits<{ selected: [id: number | string] }>();
